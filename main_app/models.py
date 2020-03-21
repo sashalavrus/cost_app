@@ -15,9 +15,7 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(64), nullable=False, unique=True, index=True)
     password_hash = db.Column(db.String(128))
     profile_image = db.Column(db.String(128), nullable=False, default='default_profile_img.png')
-    task = db.relationship('NeedsOfApartment', backref='resident', lazy='dynamic')
-
-    costs = db.relationship('costs', backref='resident', lazy='dynamic')
+    costs_id = db.Column(db.Integer, db.ForeignKey('costs.id'))
 
     def __init__(self, username, email, password):
         self.username = username
@@ -33,13 +31,15 @@ class User(db.Model, UserMixin):
 
 class Costs(db.Model):
 
+    __tablename__ = "costs"
+
     id = db.Column(db.Integer, primary_key=True)
 
     cost_title = db.Column(db.String(128), nullable=False)
 
     spent_money = db.Column(db.Float, nullable=False, default=0.00)
 
-    who_spent = db.Column(db.Integer, db.ForeignKey('users.id'))
+    who_spent = db.relationship('User', backref='cost')
 
     purchase_time = db.Column(db.DateTime, default=datetime.now())
 
@@ -54,9 +54,11 @@ class Costs(db.Model):
 
 class Needs(db.Model):
 
+    __tablename__ = 'needs'
+
     id = db.Column(db.Integer, primary_key=True)
 
-    description = db.Column(db.Text, index=True)
+    description = db.Column(db.Text)
 
     done = db.Column(db.Boolean, default=False)
 
