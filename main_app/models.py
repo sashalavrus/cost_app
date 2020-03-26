@@ -37,7 +37,7 @@ class Costs(db.Model):
 
     spent_money = db.Column(db.Float, nullable=False, default=0.00)
 
-    who_spent = db.relationship('User', backref='cost')
+    who_spent = db.relationship('User', backref='author')
 
     purchase_time = db.Column(db.DateTime, default=datetime.now())
 
