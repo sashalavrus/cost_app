@@ -4,8 +4,6 @@ from flask_login import UserMixin
 from datetime import datetime
 
 
-
-
 class User(db.Model, UserMixin):
 
     __tablename__ = 'users'
@@ -43,8 +41,8 @@ class Costs(db.Model):
 
     purchase_time = db.Column(db.DateTime, default=datetime.now())
 
-    def __init__(self, cost_name, spent_money, who_spent):
-        self.cost_name = cost_name
+    def __init__(self, cost_title, spent_money, who_spent):
+        self.cost_title = cost_title
         self.spent_money = spent_money
         self.who_spent = who_spent
 
@@ -62,8 +60,39 @@ class Needs(db.Model):
 
     done = db.Column(db.Boolean, default=False)
 
+    comments = db.relationship('Comments', backref='needs', lazy=True)
+
     def __init__(self, description):
         self.description = description
 
     def __repr__(self):
         return f"Need {self.description} as soon as possible"
+
+
+class Comments(db.Model):
+
+    __tablename__ = 'comments'
+
+    id = db.Column(db.Integer, primary_key=True)
+
+    text = db.Column(db.Text)
+
+    time = db.Column(db.DateTime, default=datetime.now())
+
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+
+    post_id = db.Column(db.Integer, db.ForeignKey('needs.id'), nullable=False)
+
+    def __init__(self, text, user_id, post_id):
+
+        self.text = text
+        self.user_id = user_id
+        self.post_id = post_id
+
+    def __repr__(self):
+        return f"Comment ID {self.id} -- Date {self.time}"
+
+
+
+
+

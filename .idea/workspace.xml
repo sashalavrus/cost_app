@@ -2,11 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="11def96f-a8aa-41e5-a735-718f01b4527b" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/main_app/users/picture_handler.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/main_app/comments/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/main_app/comments/forms.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/main_app/comments/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_app/costs/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/main_app/costs/forms.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main_app/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/main_app/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_app/users/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/main_app/users/forms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_app/needs/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/main_app/needs/forms.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -78,7 +80,8 @@
       <option name="presentableId" value="Default" />
       <updated>1584726300641</updated>
       <workItem from="1584726310745" duration="4279000" />
-      <workItem from="1584806885694" duration="5990000" />
+      <workItem from="1584806885694" duration="8259000" />
+      <workItem from="1585235112763" duration="2882000" />
     </task>
     <servers />
   </component>
@@ -89,9 +92,9 @@
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="639" y="350" key="com.intellij.ide.util.TipDialog" timestamp="1584806887209">
+    <state x="639" y="350" key="com.intellij.ide.util.TipDialog" timestamp="1585235113493">
       <screen x="0" y="0" width="1920" height="1043" />
     </state>
-    <state x="639" y="350" key="com.intellij.ide.util.TipDialog/0.0.1920.1043@0.0.1920.1043" timestamp="1584806887209" />
+    <state x="639" y="350" key="com.intellij.ide.util.TipDialog/0.0.1920.1043@0.0.1920.1043" timestamp="1585235113493" />
   </component>
 </project>
