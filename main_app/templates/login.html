@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content%}
+
+  <form  method="POST">
+  <div class="form-group">
+    {{form.hidden_tag()}}
+     <label for="email" class="col-sm-2 col-form-label col-form-label-lg"> {{form.email.label}} </label>
+    <input id="email" name="email" class="form-control mb-2 mr-sm-2"  placeholder="example@example.com" type="email" >
+        </div>
+
+      <div class="form-group">
+    <label for="password">{{form.password.label}}</label>
+    <input name="password" type="password" class="form-control" id="password">
+  </div>
+
+    <button  name="submit" type="submit" class="btn btn-primary">LOG IN</button>
+
+
+  </form>
+
+{% endblock %}

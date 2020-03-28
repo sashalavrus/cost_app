@@ -1,5 +1,5 @@
 from flask import render_template, url_for, flash, redirect, request, Blueprint, abort
-from flask_login import login_user, current_user, logout_user, login_required
+from flask_login import current_user, login_required
 from main_app import db
 from main_app.models import Costs
 from main_app.costs.forms import CostForm, CostUpdate
@@ -46,8 +46,21 @@ def update_cost(costs_id):
 
         db.session.commit()
         flash('Costs update')
-        return redirect(url_for('cost.costs', ))
+        return redirect(url_for('cost.costs'))
+
+    elif request.method == 'GET':
+
+        form.description.data = cost.cost_title
+        form.spent_money.data = cost.spent_money
+
+    return render_template('create_cost.html', form=form)
 
 
-
+@costs.route('/<int:costs_id>')
+def cost(costs_id):
+    view_cost = Costs.query.get_or_404(costs_id)
+    return render_template('view_cost.html',
+                           cost_title=view_cost.cost_title,
+                           date=view_cost.purchase_time,
+                           view_cost=view_cost)
 

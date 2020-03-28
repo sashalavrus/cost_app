@@ -9,11 +9,30 @@
     <title>ХШ58Б</title>
 </head>
 <body>
-<nav class="navbar navbar-light bg-light">
-  <a class="navbar-brand" href="{{url_for('index')}}">ХШ58Б</a>
-    <a class="navbar-brand" href="{{url_for('add_cost')}}">ADD COST</a>
-     <a class="navbar-brand" href="{{url_for('index')}}">DELETE</a>
-         <a class="navbar-brand" href="{{url_for('index')}}">LIST</a>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <ul class='nav'>
+    <li >
+    <a class="navbar-brand" href="{{url_for('core.index')}}">ХШ58Б</a>
+    </li>
+    <li class="nav-item">
+    <a class="nav-item nav-link active" href="{{url_for('core.info')}}">INFO</a>
+    </li>
+    {% if current_user.is_authenticated %}
+     <li class='nav-link'>
+    <a  href="{{url_for('users.logout')}}">LOGOUT</a>
+     </li>
+        <li class='nav-link'>
+    <a  href="{{url_for('users.account')}}">ACCOUNT</a>
+        </li>
+    {% else %}
+        <li class='nav-link'>
+    <a  href="{{url_for('users.login')}}">LOG IN</a>
+        </li>
+        <li class='nav-link'>
+    <a  href="{{url_for('users.register')}}">REGISTER</a>
+        </li>
+    {% endif %}
+    </ul>
 </nav>
 
 {% block content %}
