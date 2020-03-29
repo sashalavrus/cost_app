@@ -18,7 +18,7 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(64), nullable=False, unique=True, index=True)
     password_hash = db.Column(db.String(128))
     profile_image = db.Column(db.String(128), nullable=False, default='default_profile_img.png')
-    costs_id = db.Column(db.Integer, db.ForeignKey('costs.id'))
+    costs = db.relationship('Costs', backref='author', lazy=True)
 
     def __init__(self, username, email, password):
         self.username = username
@@ -40,9 +40,9 @@ class Costs(db.Model):
 
     cost_title = db.Column(db.String(128), nullable=False)
 
-    spent_money = db.Column(db.Float, nullable=False, default=0.00)
+    spent_money = db.Column(db.Float, nullable=False)
 
-    who_spent = db.relationship('User', backref='author')
+    who_spent = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
 
     purchase_time = db.Column(db.DateTime, default=datetime.now())
 
@@ -52,7 +52,8 @@ class Costs(db.Model):
         self.who_spent = who_spent
 
     def __repr__(self):
-        return f"{self.cost_name} was spent {self.spent_money} UAN by {self.who_spent} at {self.purchase_time} "
+        return f"{self.cost_title} was spent {self.spent_money} UAN " \
+               f"at {self.purchase_time.year} {self.purchase_time.month} {self.purchase_time.day}  "
 
 
 class Needs(db.Model):

@@ -8,31 +8,34 @@ costs = Blueprint('costs', __name__)
 
 
 @costs.route('/all_costs')
-def all_costs():
-    return render_template(url_for('costs.html'))
+def all():
+    costs_all = Costs.query.all()
+
+    return render_template('costs.html', costs=costs_all)
 
 
 @costs.route('/create_cost', methods=['GET', 'POST'])
 @login_required
-def create_cost():
+def create():
     form = CostForm()
 
     if form.validate_on_submit():
+
         cost = Costs(cost_title=form.description.data,
-                     spent_money=form.description.data,
-                     user_id=current_user.id)
+                     spent_money=float(form.spent_money.data),
+                     who_spent=current_user.id)
 
         db.session.add(cost)
         db.session.commit()
         flash('Thank you for yours costs')
-        return redirect(url_for('all_costs'))
+        return redirect(url_for('costs.all'))
 
     return render_template('create_cost.html', form=form)
 
 
 @costs.route('/<int:costs_id>/update', methods=['GET', 'POST'])
 @login_required
-def update_cost(costs_id):
+def update(costs_id):
     cost = Costs.query.get_or_404(costs_id)
 
     if cost.cost.author != current_user:
