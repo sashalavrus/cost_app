@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
+    <h1>New needs</h1>
   <div class="container">
     <form class="form-group" method="POST">
       {{form.hidden_tag()}}
@@ -9,10 +10,6 @@
         {{form.description(class="form-control form-control-lg")}}
       </div>
       <div class="form-group">
-        {{form.spent_money.label(class="form-control-label")}}
-        {{form.spent_money(class="form-control form-control-lg")}}
-      </div>
-      <div class="form-group">
         {{form.submit(class="btn btn-outline-info")}}
       </div>
 
@@ -20,4 +17,3 @@
   </div>
 {% endblock %}
 
-al

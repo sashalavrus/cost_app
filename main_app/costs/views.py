@@ -1,7 +1,7 @@
 from flask import render_template, url_for, flash, redirect, request, Blueprint, abort
 from flask_login import current_user, login_required
 from main_app import db
-from main_app.models import Costs
+from main_app.models import Costs, User
 from main_app.costs.forms import CostForm, CostUpdate
 
 costs = Blueprint('costs', __name__)
@@ -66,4 +66,9 @@ def cost(costs_id):
                            cost_title=view_cost.cost_title,
                            date=view_cost.purchase_time,
                            view_cost=view_cost)
+
+
+@cost.route('/cost_handler')
+def cost_handler():
+    pass
 

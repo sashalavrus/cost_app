@@ -25,9 +25,10 @@ login_manager.login_view = 'users.login'
 
 from main_app.core.views import core
 from main_app.costs.views import costs
-#from main_app.needs.views import needs
+from main_app.needs.views import needs
 from main_app.users.views import users
 
 app.register_blueprint(core)
 app.register_blueprint(costs)
 app.register_blueprint(users)
+app.register_blueprint(needs)

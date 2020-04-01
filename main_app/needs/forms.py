@@ -6,13 +6,8 @@ from main_app.models import Needs
 
 class NeedsForm(FlaskForm):
 
-    cost_name = StringField('Name of Cost', validators=[DataRequired()])
-    spent_money = FloatField('Amount of spent money', validators=[DataRequired()])
+    description= StringField('Description of needs', validators=[DataRequired()])
+
     submit = SubmitField('Submit')
 
 
-class  CostUpdate(FlaskForm):
-
-    cost_name = StringField('Name Update', validators=[DataRequired()])
-    spent_money = FloatField('update amount', validators=[DataRequired()])
-    submit = SubmitField('Submit')

@@ -48,7 +48,7 @@ def logout():
     return redirect(url_for('core.index'))
 
 
-@users.route('/account', methods=['GET', 'POST'])
+@users.route('/change_account', methods=['GET', 'POST'])
 @login_required
 def account():
 
@@ -75,10 +75,15 @@ def account():
     return render_template('account.html', form=form, profile_image=profile_image)
 
 
-@users.route('/<username>')
+@users.route('/comment/<username>')
 def user_comment(username):
     page = request.args.get('page', 1, type=int)
     user = User.query.filter_by(username=username).first_or_404()
     comments = Comments.query.filter_by(author=user).order_by(Comments.date.desc()).paginate(page=page, per_page=5)
     return render_template('user_comments.html', comments=comments, user=user)
 
+
+@users.route('/<username>')
+def info(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    return render_template('user_info.html', user=user)

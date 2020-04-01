@@ -2,7 +2,7 @@
 {% block content %}
 {% for cost in costs %}
    <p>
-   {{ cost }} {{  }}
+   {{ cost }} <a href="{{ url_for('users.info', username=cost.author.username) }}">{{ cost.author.username }}</a>
    </p>
     {% endfor %}
 {% endblock %}
