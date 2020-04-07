@@ -7,6 +7,7 @@ class CostForm(FlaskForm):
 
     description = StringField('Description', validators=[DataRequired()])
     spent_money = FloatField('Spent money', validators=[DataRequired()])
+    group_id = IntegerField('Enter Group id', validators=[DataRequired()])
     submit = SubmitField('Submit')
 
 
@@ -15,3 +16,9 @@ class CostUpdate(FlaskForm):
     description = StringField('Update description', validators=[DataRequired()])
     spent_money = FloatField('Spent money', validators=[DataRequired()])
     submit = SubmitField('Submit')
+
+
+class CostHandler(FlaskForm):
+
+    group_id = IntegerField('Id of Group', validators=[DataRequired()])
+    submit = SubmitField('Calculate')

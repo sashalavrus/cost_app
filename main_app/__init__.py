@@ -7,6 +7,7 @@ from flask_login import LoginManager
 app = Flask(__name__)
 
 app.config['SECRET_KEY'] = 'mysecretkey'
+app.config['FLASKY_ADMIN'] = 'grifin07@mail.com'
 
 ##DATABASE
 
@@ -27,8 +28,10 @@ from main_app.core.views import core
 from main_app.costs.views import costs
 from main_app.needs.views import needs
 from main_app.users.views import users
+from main_app.groups.views import groups
 
 app.register_blueprint(core)
 app.register_blueprint(costs)
 app.register_blueprint(users)
 app.register_blueprint(needs)
+app.register_blueprint(groups)

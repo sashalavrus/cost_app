@@ -2,7 +2,7 @@ from flask import render_template, url_for, flash, redirect, request, Blueprint
 from flask_login import login_user, current_user, logout_user, login_required
 from main_app import db
 from main_app.models import User, Costs, Needs, Comments
-from main_app.users.forms import RegistrationForm, LoginForm, UpdateUserForm
+from main_app.users.form import RegistrationForm, LoginForm, UpdateUserForm
 from main_app.users.picture_handler import add_profile_pic
 
 users = Blueprint('users', __name__)

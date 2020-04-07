@@ -30,9 +30,14 @@
         <li class='nav-link'>
     <a  href="{{url_for('costs.all')}}">ALL COSTS</a>
         </li>
-
         <li class='nav-link'>
     <a  href="{{url_for('needs.create')}}">CREATE NEED</a>
+        </li>
+        <li class='nav-link'>
+    <a  href="{{url_for('groups.create')}}">CREATE GROUP</a>
+        </li>
+          <li class='nav-link'>
+    <a  href="{{url_for('groups.create_cost_group')}}">CREATE COST GROUP</a>
         </li>
     {% else %}
         <li class='nav-link'>

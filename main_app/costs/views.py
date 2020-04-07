@@ -1,9 +1,9 @@
 from flask import render_template, url_for, flash, redirect, request, Blueprint, abort
 from flask_login import current_user, login_required
 from main_app import db
-from main_app.models import Costs, User
-from main_app.costs.forms import CostForm, CostUpdate
-
+from main_app.models import Costs, User, WhoOwesWhom
+from main_app.costs.form import CostForm, CostUpdate, CostHandler
+from main_app.costs.cost_handler import cost_handle
 costs = Blueprint('costs', __name__)
 
 
@@ -23,7 +23,8 @@ def create():
 
         cost = Costs(cost_title=form.description.data,
                      spent_money=float(form.spent_money.data),
-                     who_spent=current_user.id)
+                     who_spent=current_user.id,
+                     group_id=form.group_id.data)
 
         db.session.add(cost)
         db.session.commit()
@@ -68,7 +69,39 @@ def cost(costs_id):
                            view_cost=view_cost)
 
 
-@cost.route('/cost_handler')
+@costs.route('/cost_handler')
+@login_required
 def cost_handler():
-    pass
 
+    form = CostHandler()
+
+    if form.validate_on_submit():
+        user_list = []
+        users = User.query.filter(User.group.group_id == form.group_id.data).all()
+        data = cost_handler(users)
+        for u in users:
+            user_list.append(u.id)
+        for u in user_list:
+            who_whom = None
+            copy_list = user_list.copy()
+            copy_list.remove(u)
+            for i in copy_list:
+                who_whom = WhoOwesWhom(who=u, whom=i,
+                                       group_id=form.group_id.data)
+                db.session.add(who_whom)
+                db.session.commit()
+        for d in data:
+            who_whom = WhoOwesWhom.query.filter_by(who=d[0], whom=d[1]).first_or_404()
+            who_whom.debt_amount(d[2])
+        return redirect(url_for('costs.final', group_id =form.group_id.data))
+
+    return render_template('cost_handler.html', form=form)
+
+
+@costs.route('/cost_finish')
+@login_required
+def final(group_id):
+
+    who_to_whom = WhoOwesWhom.query.filter_by(group_id=group_id).all()
+
+    return render_template('final_cost.html', who_to_whom=who_to_whom)
