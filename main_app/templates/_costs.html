@@ -1,0 +1,5 @@
+{% for cost in costs %}
+   <p>
+   {{ cost }} <a href="{{ url_for('users.info', username=cost.author.username) }}">{{ cost.author.username }}</a>
+   </p>
+    {% endfor %}

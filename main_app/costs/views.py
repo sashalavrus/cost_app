@@ -1,17 +1,22 @@
 from flask import render_template, url_for, flash, redirect, request, Blueprint, abort
 from flask_login import current_user, login_required
 from main_app import db
-from main_app.models import Costs, User, WhoOwesWhom
+from main_app.models import Costs, User, WhoOwesWhom, CostGroup
 from main_app.costs.form import CostForm, CostUpdate, CostHandler
 from main_app.costs.cost_handler import cost_handle
 costs = Blueprint('costs', __name__)
 
 
-@costs.route('/all_costs')
+@costs.route('/all_costs', methods=['GET', 'POST'])
+@login_required
 def all():
-    costs_all = Costs.query.all()
+    if request.method == 'GET':
+        groups = CostGroup.query.filter_by(user_id=current_user.id).all()
+        return render_template('costs.html', groups=groups)
+    elif request.method == 'POST':
+        costs_all = Costs.query.filter_by(group_id=request.values.get('group_choice')).all()
 
-    return render_template('costs.html', costs=costs_all)
+        return render_template('costs.html', costs=costs_all)
 
 
 @costs.route('/create_cost', methods=['GET', 'POST'])

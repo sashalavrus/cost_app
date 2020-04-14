@@ -176,6 +176,7 @@ class Groups(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), nullable=False)
+    cost_group = db.relationship('CostGroup', backref='cost_group', lazy=True)
 
     def __init__(self, name):
         self.name = name
