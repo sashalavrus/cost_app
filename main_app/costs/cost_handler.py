@@ -6,8 +6,8 @@ def cost_handle(users):
 
     result = dict()
     for user in users:
-        user_costs = Costs.query.filter_by(who_spent=user.id).all()
-        result.update({user.id: cost_sum(user_costs)})
+        user_costs = Costs.query.filter_by(who_spent=user.user_id).all()
+        result.update({user.user_id: cost_sum(user_costs)})
 
     result = inter_process(result)
 
@@ -30,29 +30,29 @@ def inter_process(data_dict):
     equal_amt = int(total_sum/len(data_dict))
 
     for kay, value in data_dict.items():
-        if (value-equal_amt) >= 0:
-            debtor.update({kay: value-equal_amt})
-        else:
+        if (value-equal_amt) > 0:
             n_debtor.update({kay: value-equal_amt})
+        elif (value-equal_amt) != 0:
+            debtor.update({kay: value-equal_amt})
 
     for kay, value in debtor.items():
         temp_dict = {kay: value}
         for kay_n, value_n in n_debtor.items():
             if value_n == 0:
                 continue
-            temp = value_n + temp_dict.values(kay)
+            temp = value_n + temp_dict.get(kay)
             if temp > 0:
                 n_debtor.update({kay_n: temp})
-                result_list.append([kay, kay_n, abs(temp_dict.values(kay))])
+                result_list.append([kay, kay_n, abs(temp_dict.get(kay))])
 
                 break
             elif temp < 0:
-                result_list.append([kay, kay_n, value_n])
+                result_list.append([kay, kay_n, abs(value_n)])
                 n_debtor.update({kay_n: 0})
                 temp_dict.update({kay: temp})
 
             elif temp == 0:
-                result_list.append([kay, kay_n, value])
+                result_list.append([kay, kay_n, abs(value)])
                 n_debtor.update({kay_n: 0})
 
     return result_list

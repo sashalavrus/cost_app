@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block content %}
+{% for i in who_to_whom %}
+    {% if i.debt_amount == 0 %}
+    {% else %}
+    <p> {{ i.who }} должен {{ i.whom }} {{ i.debt_amount }} Гривен</p>
+    {% endif %}
+{% endfor %}
+{% endblock %}

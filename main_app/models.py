@@ -78,7 +78,6 @@ class User(db.Model, UserMixin):
     password_hash = db.Column(db.String(128))
     profile_image = db.Column(db.String(128), nullable=False, default='default_profile_img.png')
     costs = db.relationship('Costs', backref='author', lazy=True)
-    group_member = db.relationship('CostGroup', backref='group', lazy=True)
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
 
     def __init__(self, username, email, password):
@@ -164,10 +163,14 @@ class CostGroup(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     group_id = db.Column(db.Integer, db.ForeignKey('groups.id'), nullable=False)
+    group_member = db.relationship('User', backref='group', lazy=True)
 
     def __init__(self, user_id, group_id):
         self.user_id = user_id
         self.group_id = group_id
+
+    def __repr__(self):
+        return f"Need {self.user_id} as soon as possible"
 
 
 class Groups(db.Model):
@@ -194,13 +197,14 @@ class WhoOwesWhom(db.Model):
         self.who = who
         self.whom = whom
         self.group_id = group_id
+        self.debt_amount = 0
 
     @property
-    def debt_amount(self):
+    def get_amount(self):
         return self.debt_amount
 
-    @debt_amount.setter
-    def debt_amount(self, amount):
+    def set_amount(self, amount):
+
         self.debt_amount = amount
 
 

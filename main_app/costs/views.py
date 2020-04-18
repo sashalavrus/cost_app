@@ -15,8 +15,10 @@ def all():
         return render_template('costs.html', groups=groups)
     elif request.method == 'POST':
         costs_all = Costs.query.filter_by(group_id=request.values.get('group_choice')).all()
-
-        return render_template('costs.html', costs=costs_all)
+        groups = CostGroup.query.filter_by(user_id=current_user.id).all()
+        return render_template('costs.html', costs=costs_all,
+                               group_id=request.values.get('group_choice'),
+                               groups=groups)
 
 
 @costs.route('/create_cost', methods=['GET', 'POST'])
@@ -55,7 +57,7 @@ def update(costs_id):
 
         db.session.commit()
         flash('Costs update')
-        return redirect(url_for('cost.costs'))
+        return redirect(url_for('costs.cost'))
 
     elif request.method == 'GET':
 
@@ -77,36 +79,33 @@ def cost(costs_id):
 @costs.route('/cost_handler')
 @login_required
 def cost_handler():
-
-    form = CostHandler()
-
-    if form.validate_on_submit():
-        user_list = []
-        users = User.query.filter(User.group.group_id == form.group_id.data).all()
-        data = cost_handler(users)
-        for u in users:
-            user_list.append(u.id)
-        for u in user_list:
-            who_whom = None
-            copy_list = user_list.copy()
-            copy_list.remove(u)
-            for i in copy_list:
-                who_whom = WhoOwesWhom(who=u, whom=i,
-                                       group_id=form.group_id.data)
-                db.session.add(who_whom)
-                db.session.commit()
-        for d in data:
-            who_whom = WhoOwesWhom.query.filter_by(who=d[0], whom=d[1]).first_or_404()
-            who_whom.debt_amount(d[2])
-        return redirect(url_for('costs.final', group_id =form.group_id.data))
-
-    return render_template('cost_handler.html', form=form)
+    group_id = request.args.get('group_id')
+    user_list = []
+    users = CostGroup.query.filter(CostGroup.group_id == group_id).all()
+    data = cost_handle(users)
+    for u in users:
+        user_list.append(u.user_id)
+    for u in user_list:
+        who_whom = None
+        copy_list = user_list.copy()
+        copy_list.remove(u)
+        for i in copy_list:
+            who_whom = WhoOwesWhom(who=u, whom=i,
+                                   group_id=group_id)
+            db.session.add(who_whom)
+            db.session.commit()
+    for d in data:
+        who_whom = WhoOwesWhom.query.filter_by(who=d[0], whom=d[1]).first_or_404()
+        who_whom.set_amount(d[2])
+        db.session.commit()
+    return redirect(url_for('costs.final', group_id=group_id))
 
 
 @costs.route('/cost_finish')
 @login_required
-def final(group_id):
+def final():
 
+    group_id = request.args.get('group_id')
     who_to_whom = WhoOwesWhom.query.filter_by(group_id=group_id).all()
 
     return render_template('final_cost.html', who_to_whom=who_to_whom)

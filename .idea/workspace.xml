@@ -2,13 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="11def96f-a8aa-41e5-a735-718f01b4527b" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/main_app/templates/_costs.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/migrations/versions/09386a5ac3a5_add_one_column.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_app/costs/cost_handler.py" beforeDir="false" afterPath="$PROJECT_DIR$/main_app/costs/cost_handler.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main_app/costs/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/main_app/costs/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main_app/data.sqlite" beforeDir="false" afterPath="$PROJECT_DIR$/main_app/data.sqlite" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_app/groups/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/main_app/groups/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main_app/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/main_app/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_app/templates/_costs.html" beforeDir="false" afterPath="$PROJECT_DIR$/main_app/templates/_costs.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_app/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/main_app/templates/base.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main_app/templates/costs.html" beforeDir="false" afterPath="$PROJECT_DIR$/main_app/templates/costs.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/migrations/versions/8ed944ed8598_initial_migrate.py" beforeDir="false" afterPath="$PROJECT_DIR$/migrations/versions/b325a853def2_initial_migrate.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_app/templates/final_cost.html" beforeDir="false" afterPath="$PROJECT_DIR$/main_app/templates/final_cost.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/versions/b325a853def2_initial_migrate.py" beforeDir="false" afterPath="$PROJECT_DIR$/migrations/versions/64527620a9ce_initial_migrate.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -141,7 +146,10 @@
       <workItem from="1586209089595" duration="2001000" />
       <workItem from="1586260412046" duration="1717000" />
       <workItem from="1586799949229" duration="2351000" />
-      <workItem from="1586877808045" duration="7153000" />
+      <workItem from="1586877808045" duration="7686000" />
+      <workItem from="1587040100647" duration="14202000" />
+      <workItem from="1587127613074" duration="14456000" />
+      <workItem from="1587217794094" duration="432000" />
     </task>
     <servers />
   </component>
@@ -160,22 +168,38 @@
       <screen x="0" y="0" width="1920" height="1043" />
     </state>
     <state x="707" y="327" width="500" height="390" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1920.1043@0.0.1920.1043" timestamp="1586105201731" />
-    <state width="1874" height="275" key="GridCell.Tab.0.bottom" timestamp="1586895896602">
+    <state width="1874" height="340" key="GridCell.Tab.0.bottom" timestamp="1587142715537">
       <screen x="0" y="0" width="1920" height="1043" />
     </state>
-    <state width="1874" height="275" key="GridCell.Tab.0.bottom/0.0.1920.1043@0.0.1920.1043" timestamp="1586895896602" />
-    <state width="1874" height="275" key="GridCell.Tab.0.center" timestamp="1586895896601">
+    <state width="1874" height="340" key="GridCell.Tab.0.bottom/0.0.1920.1043@0.0.1920.1043" timestamp="1587142715537" />
+    <state width="1874" height="340" key="GridCell.Tab.0.center" timestamp="1587142715537">
       <screen x="0" y="0" width="1920" height="1043" />
     </state>
-    <state width="1874" height="275" key="GridCell.Tab.0.center/0.0.1920.1043@0.0.1920.1043" timestamp="1586895896601" />
-    <state width="1874" height="275" key="GridCell.Tab.0.left" timestamp="1586895896601">
+    <state width="1874" height="340" key="GridCell.Tab.0.center/0.0.1920.1043@0.0.1920.1043" timestamp="1587142715537" />
+    <state width="1874" height="340" key="GridCell.Tab.0.left" timestamp="1587142715536">
       <screen x="0" y="0" width="1920" height="1043" />
     </state>
-    <state width="1874" height="275" key="GridCell.Tab.0.left/0.0.1920.1043@0.0.1920.1043" timestamp="1586895896601" />
-    <state width="1874" height="275" key="GridCell.Tab.0.right" timestamp="1586895896601">
+    <state width="1874" height="340" key="GridCell.Tab.0.left/0.0.1920.1043@0.0.1920.1043" timestamp="1587142715536" />
+    <state width="1874" height="340" key="GridCell.Tab.0.right" timestamp="1587142715537">
       <screen x="0" y="0" width="1920" height="1043" />
     </state>
-    <state width="1874" height="275" key="GridCell.Tab.0.right/0.0.1920.1043@0.0.1920.1043" timestamp="1586895896601" />
+    <state width="1874" height="340" key="GridCell.Tab.0.right/0.0.1920.1043@0.0.1920.1043" timestamp="1587142715537" />
+    <state width="1874" height="340" key="GridCell.Tab.1.bottom" timestamp="1587142715538">
+      <screen x="0" y="0" width="1920" height="1043" />
+    </state>
+    <state width="1874" height="340" key="GridCell.Tab.1.bottom/0.0.1920.1043@0.0.1920.1043" timestamp="1587142715538" />
+    <state width="1874" height="340" key="GridCell.Tab.1.center" timestamp="1587142715538">
+      <screen x="0" y="0" width="1920" height="1043" />
+    </state>
+    <state width="1874" height="340" key="GridCell.Tab.1.center/0.0.1920.1043@0.0.1920.1043" timestamp="1587142715538" />
+    <state width="1874" height="340" key="GridCell.Tab.1.left" timestamp="1587142715538">
+      <screen x="0" y="0" width="1920" height="1043" />
+    </state>
+    <state width="1874" height="340" key="GridCell.Tab.1.left/0.0.1920.1043@0.0.1920.1043" timestamp="1587142715538" />
+    <state width="1874" height="340" key="GridCell.Tab.1.right" timestamp="1587142715538">
+      <screen x="0" y="0" width="1920" height="1043" />
+    </state>
+    <state width="1874" height="340" key="GridCell.Tab.1.right/0.0.1920.1043@0.0.1920.1043" timestamp="1587142715538" />
     <state width="235" height="500" key="HiddenNamespacesPopup" timestamp="1585433725231">
       <screen x="0" y="0" width="1920" height="1043" />
     </state>
@@ -184,10 +208,10 @@
       <screen x="0" y="0" width="1920" height="1043" />
     </state>
     <state x="456" y="157" key="SettingsEditor/0.0.1920.1043@0.0.1920.1043" timestamp="1586191085303" />
-    <state x="639" y="350" key="com.intellij.ide.util.TipDialog" timestamp="1586878419746">
+    <state x="639" y="350" key="com.intellij.ide.util.TipDialog" timestamp="1587217825379">
       <screen x="0" y="0" width="1920" height="1043" />
     </state>
-    <state x="639" y="350" key="com.intellij.ide.util.TipDialog/0.0.1920.1043@0.0.1920.1043" timestamp="1586878419746" />
+    <state x="639" y="350" key="com.intellij.ide.util.TipDialog/0.0.1920.1043@0.0.1920.1043" timestamp="1587217825379" />
     <state x="552" y="184" width="804" height="677" key="scopes" timestamp="1586110390413">
       <screen x="0" y="0" width="1920" height="1043" />
     </state>
@@ -197,18 +221,7 @@
     </state>
     <state x="623" y="230" width="672" height="678" key="search.everywhere.popup/0.0.1920.1043@0.0.1920.1043" timestamp="1586111116202" />
   </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/main_app/models.py</url>
-          <line>72</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
-  </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/final_project$final_project.coverage" NAME="final_project Coverage Results" MODIFIED="1586895896585" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/final_project$final_project.coverage" NAME="final_project Coverage Results" MODIFIED="1587218220961" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

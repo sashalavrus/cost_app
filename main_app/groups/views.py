@@ -8,9 +8,9 @@ from main_app.groups.form import CreateCostGroup, CreateGroup
 groups = Blueprint('groups', __name__)
 
 
-@groups.route('/create', methods=['GET', 'POST'])
+@groups.route('/create_group', methods=['GET', 'POST'])
 @login_required
-def create():
+def create_group():
 
     form = CreateGroup()
 
