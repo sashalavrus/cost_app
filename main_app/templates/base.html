@@ -5,6 +5,7 @@
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
     <meta charset="UTF-8">
     <title>ХШ58Б</title>
 </head>
@@ -18,10 +19,10 @@
     <a class="nav-item nav-link active" href="{{url_for('core.info')}}">INFO</a>
     </li>
     {% if current_user.is_authenticated %}
-     <li class='nav-link'>
+     <li class='nav-link ' id="login_out">
     <a  href="{{url_for('users.logout')}}">LOGOUT</a>
      </li>
-        <li class='nav-link'>
+        <li class='nav-link' id="login_out">
     <a  href="{{url_for('users.account')}}">ACCOUNT</a>
         </li>
         <li class='nav-link'>
@@ -40,10 +41,10 @@
     <a  href="{{url_for('groups.create_cost_group')}}">CREATE COST GROUP</a>
         </li>
     {% else %}
-        <li class='nav-link'>
+        <li class='nav-link' id="login_out">
     <a  href="{{url_for('users.login')}}">LOG IN</a>
         </li>
-        <li class='nav-link'>
+        <li class='nav-link' id="login_out">
     <a  href="{{url_for('users.register')}}">REGISTER</a>
         </li>
     {% endif %}

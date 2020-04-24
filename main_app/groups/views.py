@@ -1,11 +1,9 @@
-from flask import render_template, url_for, flash, redirect, request, Blueprint
+from flask import render_template, url_for, flash, redirect, request
 from flask_login import login_user, current_user, logout_user, login_required
 from main_app import db
 from main_app.models import User, Costs, Needs, Comments, Groups, CostGroup
 from main_app.groups.form import CreateCostGroup, CreateGroup
-
-
-groups = Blueprint('groups', __name__)
+from . import groups
 
 
 @groups.route('/create_group', methods=['GET', 'POST'])

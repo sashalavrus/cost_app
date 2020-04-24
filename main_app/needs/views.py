@@ -1,10 +1,9 @@
-from flask import render_template, url_for, flash, redirect, request, Blueprint
+from flask import render_template, url_for, flash, redirect, request
 from flask_login import login_user, current_user, logout_user, login_required
 from main_app import db
-from main_app.models import User, Costs, Needs, Comments
+from main_app.models import User, Costs, Needs, Comments, CostGroup
 from main_app.needs.form import NeedsForm
-
-needs = Blueprint('needs', __name__)
+from . import needs
 
 
 @needs.route('/create', methods=['GET', 'POST'])
@@ -13,9 +12,15 @@ def create():
 
     form = NeedsForm()
 
-    if form.validate_on_submit():
+    if request.method == 'GET':
+        groups = CostGroup.query.filter_by(user_id=current_user.id).all()
 
-        needs_obj = Needs(description=form.description.data)
+        return render_template('create_needs.html', form=form, groups=groups)
+
+    elif form.validate_on_submit():
+
+        need_group = request.values.get('group_choice')
+        needs_obj = Needs(description=form.description.data, group_id=need_group)
 
         db.session.add(needs_obj)
         db.session.commit()

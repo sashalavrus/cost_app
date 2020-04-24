@@ -1,6 +1,6 @@
 from main_app import db, login_manager
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import UserMixin
+from flask_login import UserMixin, AnonymousUserMixin
 from datetime import datetime
 from flask import current_app
 
@@ -94,8 +94,27 @@ class User(db.Model, UserMixin):
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
 
+    def can(self, permissions):
+        return self.role.permissions is not None and\
+            (self.role.permissions & permissions) == permissions
+
+    def is_administrator(self):
+        return self.can(Permission.ADMIN)
+
     def __repr__(self):
         return f"Name = {self.username} "
+
+
+class AnonUser(AnonymousUserMixin):
+
+    def can(self, permissions):
+        return False
+
+    def is_administrator(self):
+        return False
+
+
+login_manager.anonymous_user = AnonUser
 
 
 class Costs(db.Model):
@@ -128,9 +147,11 @@ class Needs(db.Model):
     description = db.Column(db.Text)
     done = db.Column(db.Boolean, default=False)
     comments = db.relationship('Comments', backref='needs', lazy=True)
+    group_id = db.Column(db.Integer, db.ForeignKey('groups.id'))
 
-    def __init__(self, description):
+    def __init__(self, description, group_id):
         self.description = description
+        self.group_id = group_id
 
     def __repr__(self):
         return f"Need {self.description} as soon as possible"

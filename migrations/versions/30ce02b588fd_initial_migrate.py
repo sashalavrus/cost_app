@@ -1,8 +1,8 @@
 """initial migrate
 
-Revision ID: 64527620a9ce
+Revision ID: 30ce02b588fd
 Revises: 
-Create Date: 2020-04-16 20:07:33.630040
+Create Date: 2020-04-24 17:57:14.125987
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '64527620a9ce'
+revision = '30ce02b588fd'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -23,12 +23,6 @@ def upgrade():
     sa.Column('name', sa.String(length=64), nullable=False),
     sa.PrimaryKeyConstraint('id')
     )
-    op.create_table('needs',
-    sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('description', sa.Text(), nullable=True),
-    sa.Column('done', sa.Boolean(), nullable=True),
-    sa.PrimaryKeyConstraint('id')
-    )
     op.create_table('roles',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(length=64), nullable=True),
@@ -38,6 +32,14 @@ def upgrade():
     sa.UniqueConstraint('name')
     )
     op.create_index(op.f('ix_roles_default'), 'roles', ['default'], unique=False)
+    op.create_table('needs',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('description', sa.Text(), nullable=True),
+    sa.Column('done', sa.Boolean(), nullable=True),
+    sa.Column('group_id', sa.Integer(), nullable=True),
+    sa.ForeignKeyConstraint(['group_id'], ['groups.id'], ),
+    sa.PrimaryKeyConstraint('id')
+    )
     op.create_table('users',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('username', sa.String(length=64), nullable=False),
@@ -84,6 +86,7 @@ def upgrade():
     sa.Column('who', sa.Integer(), nullable=False),
     sa.Column('whom', sa.Integer(), nullable=False),
     sa.Column('group_id', sa.Integer(), nullable=False),
+    sa.Column('debt_amount', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['group_id'], ['groups.id'], ),
     sa.ForeignKeyConstraint(['who'], ['users.id'], ),
     sa.ForeignKeyConstraint(['whom'], ['users.id'], ),
@@ -101,8 +104,8 @@ def downgrade():
     op.drop_index(op.f('ix_users_username'), table_name='users')
     op.drop_index(op.f('ix_users_email'), table_name='users')
     op.drop_table('users')
+    op.drop_table('needs')
     op.drop_index(op.f('ix_roles_default'), table_name='roles')
     op.drop_table('roles')
-    op.drop_table('needs')
     op.drop_table('groups')
     # ### end Alembic commands ###

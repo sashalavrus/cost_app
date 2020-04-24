@@ -24,11 +24,11 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'users.login'
 
-from main_app.core.views import core
-from main_app.costs.views import costs
-from main_app.needs.views import needs
-from main_app.users.views import users
-from main_app.groups.views import groups
+from .core import core
+from .costs import costs
+from .needs import needs
+from .users import users
+from .groups import groups
 
 app.register_blueprint(core)
 app.register_blueprint(costs)
