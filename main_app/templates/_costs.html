@@ -1,7 +1,12 @@
 {% for cost in costs %}
-   <p>
-   {{ cost }} <a href="{{ url_for('users.info', username=cost.author.username) }}">{{ cost.author.username }}</a>
-   </p>
+ <div class="card">
+  <div class="card-body">
+    {{ cost }} <a href="{{ url_for('users.info', username=cost.author.username) }}">{{ cost.author.username }}</a>
+      {% if cost.author.id == current_user.id %}
+      <a href="{{ url_for('costs.update',costs_id = cost.id) }}">Update</a>
+      {% endif %}
+  </div>
+</div>
     {% endfor %}
 
 <a href="{{ url_for('costs.cost_handler', group_id=group_id)}}">{{group_id}}</a>

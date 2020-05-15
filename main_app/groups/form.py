@@ -11,8 +11,8 @@ class CreateGroup(FlaskForm):
 
 class CreateCostGroup(FlaskForm):
 
-    user = IntegerField('User id', validators=[DataRequired()])
-    group_name = IntegerField('Group Name', validators=[DataRequired()])
+    user = StringField('Username', validators=[DataRequired()])
+    group_name = StringField('Group Name', validators=[DataRequired()])
     submit = SubmitField('Submit')
 
 

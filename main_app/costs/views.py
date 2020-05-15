@@ -1,7 +1,7 @@
 from flask import render_template, url_for, flash, redirect, request, abort
 from flask_login import current_user, login_required
 from main_app import db
-from main_app.models import Costs, User, WhoOwesWhom, CostGroup
+from main_app.models import Costs, User, WhoOwesWhom, CostGroup, Groups
 from main_app.costs.form import CostForm, CostUpdate, CostHandler
 from main_app.costs.cost_handler import cost_handle
 from . import costs
@@ -24,29 +24,38 @@ def all():
 @costs.route('/create_cost', methods=['GET', 'POST'])
 @login_required
 def create():
-    form = CostForm()
 
+    form = CostForm()
+    user_groups = {}
+    all_cost_groups = CostGroup.query.filter_by(user_id=current_user.id).all()
+    for g in all_cost_groups:
+        group = Groups.query.get_or_404(g.group_id)
+        user_groups.update(({g.group_id: group.name}))
     if form.validate_on_submit():
+
+        group_id = request.form.get('group_id')
 
         cost = Costs(cost_title=form.description.data,
                      spent_money=float(form.spent_money.data),
                      who_spent=current_user.id,
-                     group_id=form.group_id.data)
+                     group_id=group_id)
 
         db.session.add(cost)
         db.session.commit()
         flash('Thank you for yours costs')
         return redirect(url_for('costs.all'))
 
-    return render_template('create_cost.html', form=form)
+    return render_template('create_cost.html', form=form, user_groups=user_groups)
 
 
-@costs.route('/<int:costs_id>/update', methods=['GET', 'POST'])
+@costs.route('/update', methods=['GET', 'POST'])
 @login_required
-def update(costs_id):
-    cost = Costs.query.get_or_404(costs_id)
+def update():
 
-    if cost.cost.author != current_user:
+    updated_cost_id = request.args.get('updated_cost_id')
+    cost = Costs.query.get_or_404(updated_cost_id)
+
+    if cost.author != current_user:
         abort(403)
 
     form = CostUpdate()
@@ -57,26 +66,34 @@ def update(costs_id):
 
         db.session.commit()
         flash('Costs update')
-        return redirect(url_for('costs.cost'))
+        return redirect(url_for('costs.all'))
 
     elif request.method == 'GET':
 
         form.description.data = cost.cost_title
         form.spent_money.data = cost.spent_money
 
-    return render_template('create_cost.html', form=form)
+    return render_template('update_cost.html', form=form)
 
 
-@costs.route('/<int:costs_id>')
-def cost(costs_id):
-    view_cost = Costs.query.get_or_404(costs_id)
-    return render_template('view_cost.html',
-                           cost_title=view_cost.cost_title,
-                           date=view_cost.purchase_time,
-                           view_cost=view_cost)
+@costs.route('/delete_cost')
+@login_required
+def delete():
+
+    deleted_cost_id = request.args.get('deleted_cost_id')
+    deleted_cost = Costs.query.get_or_404(deleted_cost_id)
+
+    if (current_user == deleted_cost.author) or current_user.is_administrator:
+        db.session.delete(deleted_cost)
+        db.session.commit()
+    else:
+        abort(403)
+    return redirect(url_for('core.index'))
 
 
-@costs.route('/cost_handler')
+
+
+@costs.route('/handler')
 @login_required
 def cost_handler():
     group_id = request.args.get('group_id')

@@ -32,9 +32,11 @@ def create_cost_group():
 
     if form.validate_on_submit():
 
-        group = CostGroup(user_id=form.user.data, group_id=form.group_name.data)
+        user = User.query.filter_by(username=str(form.user.data)).first_or_404()
+        group = Groups.query.filter_by(name=str(form.group_name.data)).first_or_404()
+        group_obj = CostGroup(user_id=user.id, group_id=group.id)
 
-        db.session.add(group)
+        db.session.add(group_obj)
         db.session.commit()
         flash('Thank you for register new Group')
         return redirect(url_for('core.index'))

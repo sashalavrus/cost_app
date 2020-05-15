@@ -12,14 +12,6 @@
         {{form.spent_money.label(class="form-control-label")}}
         {{form.spent_money(class="form-control form-control-lg")}}
       </div>
-        <div class="form-group">
-            <p class="form-control-label">Select group name</p>
-             <select class="form-control" name="group_id">
-            {% for id, name in user_groups.items() %}
-            <option value="{{id}}">{{name}}</option>
-            {% endfor %}
-            </select>
-      </div>
       <div class="form-group">
         {{form.submit(class="btn btn-outline-info")}}
       </div>

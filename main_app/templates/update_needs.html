@@ -1,6 +1,5 @@
 {% extends "base.html" %}
 {% block content %}
-    <h1>New needs</h1>
   <div class="container">
     <form class="form-group" method="POST">
       {{form.hidden_tag()}}
@@ -9,21 +8,12 @@
         {{form.text.label(class="form-control-label")}}
         {{form.text(class="form-control form-control-lg")}}
       </div>
-     <div class="form-group">
-            <p class="form-control-label">Select group </p>
-             <select class="form-control" name="group_id">
-            {% for id, name in user_groups.items() %}
-            <option value="{{id}}">{{name}}</option>
-            {% endfor %}
-            </select>
-        </div>
-        <div class="form-group">
+
+      <div class="form-group">
         {{form.submit(class="btn btn-outline-info")}}
       </div>
 
-
-  </form>
-
+    </form>
   </div>
 {% endblock %}
 

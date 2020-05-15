@@ -79,6 +79,7 @@ class User(db.Model, UserMixin):
     profile_image = db.Column(db.String(128), nullable=False, default='default_profile_img.png')
     costs = db.relationship('Costs', backref='author', lazy=True)
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
+    needs = db.relationship('Needs', backref='author', lazy=True)
 
     def __init__(self, username, email, password):
         self.username = username
@@ -144,14 +145,16 @@ class Needs(db.Model):
     __tablename__ = 'needs'
 
     id = db.Column(db.Integer, primary_key=True)
-    description = db.Column(db.Text)
+    text = db.Column(db.Text)
     done = db.Column(db.Boolean, default=False)
     comments = db.relationship('Comments', backref='needs', lazy=True)
     group_id = db.Column(db.Integer, db.ForeignKey('groups.id'))
+    who_posted = db.Column(db.Integer, db.ForeignKey('users.id'))
 
-    def __init__(self, description, group_id):
+    def __init__(self, description, group_id, user_id):
         self.description = description
         self.group_id = group_id
+        self.who_posted = user_id
 
     def __repr__(self):
         return f"Need {self.description} as soon as possible"
@@ -199,7 +202,7 @@ class Groups(db.Model):
     __tablename__ = 'groups'
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(64), nullable=False)
+    name = db.Column(db.String(64), nullable=False, unique=True)
     cost_group = db.relationship('CostGroup', backref='cost_group', lazy=True)
 
     def __init__(self, name):

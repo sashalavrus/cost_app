@@ -6,7 +6,7 @@ from main_app.models import Needs
 
 class NeedsForm(FlaskForm):
 
-    description= StringField('Description of needs', validators=[DataRequired()])
+    text = StringField('Description of needs', validators=[DataRequired()])
 
     submit = SubmitField('Submit')
 
