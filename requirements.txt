@@ -34,3 +34,6 @@ URLObject==2.4.3
 Werkzeug==0.14.1
 wincertstore==0.2
 WTForms==2.1
+Flask-mail==0.9.1
+Flask-HTTPAuth==4.0.0
+

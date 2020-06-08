@@ -3,11 +3,20 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
-
+from flask_mail import Mail
 app = Flask(__name__)
 
 app.config['SECRET_KEY'] = 'mysecretkey'
-app.config['FLASKY_ADMIN'] = 'grifin07@mail.com'
+app.config['COSTAPP_ADMIN'] = 'grifin07@mail.com'
+app.config['COSTAPP_MAIL_SUBJECT_PREFIX'] = '[CostApp]'
+app.config['COSTAPP_MAIL_SENDER'] = 'costapp2020@gmail.com'
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USE_SSL'] = True
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USERNAME'] = 'costapp2020@gmail.com'
+app.config['MAIL_PASSWORD'] = 'pk340ak47'
+
 
 ##DATABASE
 
@@ -17,8 +26,8 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 Migrate(app, db)
-
-
+mail = Mail()
+mail.init_app(app)
 login_manager = LoginManager()
 
 login_manager.init_app(app)

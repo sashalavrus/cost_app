@@ -1,7 +1,7 @@
 from flask import render_template, url_for, flash, redirect, request, abort
 from flask_login import login_user, current_user, logout_user, login_required
 from main_app import db
-from main_app.models import User, Costs, Needs, Comments, CostGroup, Groups
+from main_app.models import User, Costs, Needs, CostGroup, Groups
 from main_app.needs.form import NeedsForm
 from . import needs
 
@@ -20,7 +20,7 @@ def create():
     if form.validate_on_submit():
 
         group_id = request.values.get('group_id')
-        needs_obj = Needs(description=form.description.data, group_id=group_id, user_id=current_user.id)
+        needs_obj = Needs(description=form.text.data, group_id=group_id, user_id=current_user.id)
 
         db.session.add(needs_obj)
         db.session.commit()
@@ -34,9 +34,16 @@ def create():
 @login_required
 def view_all():
 
-    all_needs = Needs.query.all()
+    user_groups = CostGroup.query.filter_by(user_id=current_user.id).all()
+    result_query = None
+    for g in user_groups:
+        need_of_group = db.session.query(Needs).filter_by(group_id=g.group_id)
+        if result_query is None:
+            result_query = need_of_group
+        else:
+            result_query = result_query.union(need_of_group)
 
-    return render_template('view_needs.html', all_needs=all_needs)
+    return render_template('view_needs.html', result_query=result_query)
 
 
 @needs.route('/update_need')

@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+    {% for n in result_query %}
+ <div class="card">
+                    <div class="card-body">
+                        {{ n.text }}
+
+                  </div>
+            </div>
+    {% endfor %}
+
+{% endblock %}

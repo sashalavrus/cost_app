@@ -1,10 +1,38 @@
 from flask import render_template, url_for, flash, redirect, request
 from flask_login import login_user, current_user, logout_user, login_required
 from main_app import db
-from main_app.models import User, Costs, Needs, Comments
+from main_app.models import User, Costs, Needs
 from main_app.users.form import RegistrationForm, LoginForm, UpdateUserForm
 from main_app.users.picture_handler import add_profile_pic
 from . import users
+from .email import send_mail
+
+
+@users.before_app_request
+def before_request():
+    if current_user.is_authenticated:
+        if not current_user.confirmed \
+                and request.endpoint \
+                and request.endpoint[:6] != 'users.' \
+                and request.endpoint != 'users.confirm':
+            return redirect(url_for('users.unconfirmed'))
+
+
+@users.route('/unconfirmed')
+def unconfirmed():
+    if current_user.is_anonymous or current_user.confirmed:
+        return redirect(url_for('core.index'))
+    return render_template('unconfirmed.html')
+
+
+@users.route('/confirm')
+@login_required
+def resend_confirmation():
+    token = current_user.generate_confirmation_token()
+    send_mail(current_user.email, 'Confirm Your Account',
+              'confirm', user=current_user, token=token)
+    flash('A new confirmation email has been sent to you by email.')
+    return redirect(url_for('core.index'))
 
 
 @users.route('/register', methods=['GET', 'POST'])
@@ -18,9 +46,25 @@ def register():
 
         db.session.add(user)
         db.session.commit()
+        token = user.generate_reset_token()
+        send_mail(user.email, 'Confirm Your Account',
+                  'confirm', user=user, token=token)
         flash('Thank you for the registration')
         return redirect(url_for('users.login'))
     return render_template('register.html', form=form)
+
+
+@users.route('/confirm/<token>')
+@login_required
+def confirm(token):
+    if current_user.confirmed:
+        return redirect(url_for('core.index'))
+    if current_user.confirm(token):
+        flash('Your account is confirmed, Thank you!!!')
+    else:
+        flash('Confirmation link is invalid, or occur unexpected error')
+
+    return redirect(url_for('core.index'))
 
 
 @users.route('/login', methods=['GET', 'POST'])
@@ -32,7 +76,6 @@ def login():
         user = User.query.filter_by(email=form.email.data).first()
 
         if user.check_password(form.password.data) and user is not None:
-
             login_user(user)
             flash('Log in is Done')
 
@@ -50,7 +93,6 @@ def logout():
 @users.route('/change_account', methods=['GET', 'POST'])
 @login_required
 def account():
-
     form = UpdateUserForm()
 
     if form.validate_on_submit():
@@ -72,14 +114,6 @@ def account():
 
     profile_image = url_for('static', filename='profile_pics/' + current_user.profile_image)
     return render_template('account.html', form=form, profile_image=profile_image)
-
-
-@users.route('/comment/<username>')
-def user_comment(username):
-    page = request.args.get('page', 1, type=int)
-    user = User.query.filter_by(username=username).first_or_404()
-    comments = Comments.query.filter_by(author=user).order_by(Comments.date.desc()).paginate(page=page, per_page=5)
-    return render_template('user_comments.html', comments=comments, user=user)
 
 
 @users.route('/<username>')
