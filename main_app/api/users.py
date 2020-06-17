@@ -12,7 +12,7 @@ def get_user(id):
     return jsonify(user.to_json())
 
 
-@api.route('users/register', methods=['POST'])
+@api.route('/users/register', methods=['POST'])
 def register():
 
     user = User.from_json(request.json)
@@ -24,11 +24,10 @@ def register():
     send_mail(user.email, 'Confirm Your Account',
               'confirm', user=user, token=token)
 
-    return jsonify(user.to_json()), 201, \
-        {"massage": 'Confirm your account in your email'}
+    return jsonify(user.to_json()), 201
 
 
-@api.route('users/update', methods=['PUT'])
+@api.route('/users/update', methods=['PUT'])
 @login_required
 def update_user():
     user = current_user

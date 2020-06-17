@@ -63,6 +63,11 @@
         <li class='nav-link' id="login_out">
     <a  href="{{url_for('users.account')}}">ACCOUNT</a>
         </li>
+        {%if current_user.is_administarator %}
+         <li class='nav-link' id="login_out">
+    <a  href="{{url_for('users.admin_panel')}}">Admin Panel</a>
+        </li>
+        {% endif %}
     {% else %}
         <li class='nav-link' id="login_out">
     <a  href="{{url_for('users.login')}}">LOG IN</a>

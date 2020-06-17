@@ -38,9 +38,11 @@ from .costs import costs
 from .needs import needs
 from .users import users
 from .groups import groups
+from .api import api
 
 app.register_blueprint(core)
 app.register_blueprint(costs)
 app.register_blueprint(users)
 app.register_blueprint(needs)
 app.register_blueprint(groups)
+app.register_blueprint(api, url_prefix='/api')

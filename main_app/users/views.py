@@ -1,11 +1,12 @@
 from flask import render_template, url_for, flash, redirect, request
 from flask_login import login_user, current_user, logout_user, login_required
 from main_app import db
-from main_app.models import User, Costs, Needs
-from main_app.users.form import RegistrationForm, LoginForm, UpdateUserForm
+from main_app.models import User, Permission, Role
+from main_app.users.form import RegistrationForm, LoginForm, UpdateUserForm, AdminForm
 from main_app.users.picture_handler import add_profile_pic
 from . import users
 from .email import send_mail
+from ..decorators import permission_required
 
 
 @users.before_app_request
@@ -120,3 +121,23 @@ def account():
 def info(username):
     user = User.query.filter_by(username=username).first_or_404()
     return render_template('user_info.html', user=user)
+
+
+@users.route('/admin_panel', methods=['GET', 'POST'])
+@login_required
+@permission_required(Permission.ADMIN)
+def admin_panel():
+
+    form = AdminForm()
+    roles = Role.query.all()
+
+    if form.validate_on_submit():
+
+        user = User.query.filter_by(username=form.username.data).first_or_404()
+
+        user.role_id = request.form.get('role_id')
+        db.session.commit()
+
+        return redirect(url_for('users.admin_panel'))
+
+    return render_template('admin_panel.html', form=form, roles=roles)

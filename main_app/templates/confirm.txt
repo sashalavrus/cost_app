@@ -1,7 +1,7 @@
 
 Dear {{ user.username }},
 
-Welcome to Flasky!
+Welcome to CostApp!
 
 To confirm your account please click on the following link:
 
@@ -9,6 +9,6 @@ To confirm your account please click on the following link:
 
 Sincerely,
 
-The Flasky Team
+The CostApp Team
 
 Note: replies to this email address are not monitored.

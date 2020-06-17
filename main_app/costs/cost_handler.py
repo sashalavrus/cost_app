@@ -2,11 +2,11 @@ from main_app.models import Costs
 from functools import reduce
 
 
-def cost_handle(users):
+def cost_handle(users, group_id):
 
     result = dict()
     for user in users:
-        user_costs = Costs.query.filter_by(who_spent=user.user_id).all()
+        user_costs = Costs.query.filter_by(who_spent=user.user_id, group_id=group_id).all()
         result.update({user.user_id: cost_sum(user_costs)})
 
     result = inter_process(result)
@@ -14,10 +14,10 @@ def cost_handle(users):
     return result
 
 
-def cost_sum(costs):
+def cost_sum(user_costs):
 
     result = 0
-    for cost in costs:
+    for cost in user_costs:
         result += cost.spent_money
     return result
 
@@ -44,7 +44,6 @@ def inter_process(data_dict):
             if temp > 0:
                 n_debtor.update({kay_n: temp})
                 result_list.append([kay, kay_n, abs(temp_dict.get(kay))])
-
                 break
             elif temp < 0:
                 result_list.append([kay, kay_n, abs(value_n)])
@@ -54,5 +53,6 @@ def inter_process(data_dict):
             elif temp == 0:
                 result_list.append([kay, kay_n, abs(value)])
                 n_debtor.update({kay_n: 0})
+                break
 
     return result_list

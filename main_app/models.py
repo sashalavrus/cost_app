@@ -83,6 +83,7 @@ class User(db.Model, UserMixin):
     costs = db.relationship('Costs', backref='author', lazy=True)
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
     needs = db.relationship('Needs', backref='author', lazy=True)
+    memberships = db.relationship('CostGroup', backref='user', lazy=True)
 
     def __init__(self, username, email, password):
         self.username = username
@@ -132,18 +133,15 @@ class User(db.Model, UserMixin):
         user_json = {
             'url': url_for('api.get_user', id=self.id, _external=True),
             'username': self.username,
-            'role': self.role_id,
-            'groups': url_for('api.user_groups', id=self.id, _external=True),
-            'costs': url_for('api.user_costs', id=self.id, _external=True),
-            'needs': url_for('api.user_needs', id=self.id, _external=True)
-        }
+            'role': self.role.name,
+            'groups': url_for('api.get_user_groups', id=self.id, _external=True)
+            }
         return user_json
 
     def generate_auth_token(self, expiration):
         s = Serializer(current_app.config['SECRET_KEY'],
                        expires_in=expiration)
         return s.dumps({'id': self.id}).decode('ascii')
-
 
     @staticmethod
     def verify_auth_token(token):
@@ -186,10 +184,9 @@ class Costs(db.Model):
     purchase_time = db.Column(db.DateTime, default=datetime.now())
     group_id = db.Column(db.Integer, db.ForeignKey('groups.id'), nullable=False)
 
-    def __init__(self, cost_title, spent_money, who_spent, group_id):
+    def __init__(self, cost_title, spent_money, group_id):
         self.cost_title = cost_title
         self.spent_money = spent_money
-        self.who_spent = who_spent
         self.group_id = group_id
 
     def __repr__(self):
@@ -198,6 +195,7 @@ class Costs(db.Model):
 
     def to_json(self):
         json_cost = {
+            'url': url_for('api.get_cost', id=self.id, _external=True),
             'title': self.cost_title,
             'spent_money': self.spent_money,
             'who_spent': url_for('api.get_user', id=self.who_spent, _external=True),
@@ -227,13 +225,13 @@ class Needs(db.Model):
     group_id = db.Column(db.Integer, db.ForeignKey('groups.id'))
     who_posted = db.Column(db.Integer, db.ForeignKey('users.id'))
 
-    def __init__(self, description, group_id, user_id):
-        self.description = description
+    def __init__(self, text, group_id, user_id):
+        self.text = text
         self.group_id = group_id
         self.who_posted = user_id
 
     def __repr__(self):
-        return f"Need {self.description} as soon as possible"
+        return f"Need {self.text} as soon as possible"
 
     def to_json(self):
         json_needs = {
@@ -247,7 +245,7 @@ class Needs(db.Model):
 
     @staticmethod
     def from_json(json_need):
-        description = json_need.get('description')
+        description = json_need.get('text')
         group_id = json_need.get('group_id')
 
         return Needs(description, group_id)
@@ -265,6 +263,21 @@ class CostGroup(db.Model):
     def __init__(self, user_id, group_id):
         self.user_id = user_id
         self.group_id = group_id
+
+    def to_json(self):
+        json_memberships = {
+            'user_id': self.user_id,
+            'group_id': self.group_id
+
+        }
+        return json_memberships
+
+    @staticmethod
+    def from_json(memberships_json):
+        user_id = memberships_json.get('user_id')
+        group_id = memberships_json.get('group_id')
+
+        return CostGroup(user_id, group_id)
 
 
 class Groups(db.Model):
@@ -310,9 +323,9 @@ class WhoOwesWhom(db.Model):
     def get_amount(self):
         return self.debt_amount
 
-    def set_amount(self, amount):
+    def plus_amount(self, amount):
 
-        self.debt_amount = amount
+        self.debt_amount += amount
 
     def to_json(self):
         json_wow = {

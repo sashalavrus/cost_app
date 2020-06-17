@@ -36,9 +36,9 @@ def create_cost_group():
 
         user = User.query.filter_by(username=str(form.user.data)).first_or_404()
         group = Groups.query.filter_by(name=str(form.group_name.data)).first_or_404()
-        group_obj = CostGroup(user_id=user.id, group_id=group.id)
+        group_mem = CostGroup(user_id=user.id, group_id=group.id)
 
-        db.session.add(group_obj)
+        db.session.add(group_mem)
         db.session.commit()
         flash('Thank you for register new Group')
         return redirect(url_for('core.index'))
@@ -70,22 +70,8 @@ def delete():
 
     deleted_group_needs = Needs.query.filter_by(group_id=deleted_group_id)
 
-    deleted_needs_comments = None
-
-    for n in deleted_group_needs:
-        deleted_comments = db.session.query(Comments).filter_by(post_id=n.id)
-
-        if deleted_needs_comments is None:
-            deleted_needs_comments = deleted_comments
-        else:
-            deleted_needs_comments = deleted_needs_comments.union(deleted_comments)
-
     for cost in deleted_costs:
         db.session.delete(cost)
-        db.session.commit()
-
-    for comment in deleted_needs_comments:
-        db.session.delete(comment)
         db.session.commit()
 
     for need in deleted_group_needs:

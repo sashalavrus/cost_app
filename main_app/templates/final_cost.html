@@ -1,9 +1,8 @@
 {% extends "base.html" %}
 {% block content %}
-{% for i in who_to_whom %}
-    {% if i.debt_amount == 0 %}
-    {% else %}
-    <p> {{ i.who }} должен {{ i.whom }} {{ i.debt_amount }} Гривен</p>
-    {% endif %}
+{% for debt_row in debt_list %}
+
+    <p> {{ debt_row[0] }} должен {{ debt_row[1] }} {{ debt_row[2]}} Гривен</p>
+
 {% endfor %}
 {% endblock %}

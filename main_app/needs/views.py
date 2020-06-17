@@ -20,7 +20,7 @@ def create():
     if form.validate_on_submit():
 
         group_id = request.values.get('group_id')
-        needs_obj = Needs(description=form.text.data, group_id=group_id, user_id=current_user.id)
+        needs_obj = Needs(text=form.text.data, group_id=group_id, user_id=current_user.id)
 
         db.session.add(needs_obj)
         db.session.commit()
@@ -78,11 +78,9 @@ def delete():
 
     deleted_need_id = request.args.get('deleted_need_id')
     deleted_need = Needs.query.get_or_404(deleted_need_id)
-    deleted_comments = Comments.query.filter_by(post_id=deleted_need_id).all()
+
 
     if (current_user == deleted_need.author) or current_user.is_administrator:
-        db.session.delete(deleted_comments)
-        db.session.commit()
         db.session.delete(deleted_need)
         db.session.commit()
     else:

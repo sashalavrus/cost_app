@@ -37,9 +37,9 @@ def create():
 
         cost = Costs(cost_title=form.description.data,
                      spent_money=float(form.spent_money.data),
-                     who_spent=current_user.id,
                      group_id=group_id)
 
+        cost.who_spent = current_user.id
         db.session.add(cost)
         db.session.commit()
         flash('Thank you for yours costs')
@@ -97,22 +97,26 @@ def cost_handler():
     group_id = request.args.get('group_id')
     user_list = []
     users = CostGroup.query.filter(CostGroup.group_id == group_id).all()
-    data = cost_handle(users)
+    data = cost_handle(users, group_id)
     for u in users:
         user_list.append(u.user_id)
     for u in user_list:
-        who_whom = None
+
         copy_list = user_list.copy()
         copy_list.remove(u)
         for i in copy_list:
-            who_whom = WhoOwesWhom(who=u, whom=i,
-                                   group_id=group_id)
-            db.session.add(who_whom)
-            db.session.commit()
+            who_whom = WhoOwesWhom.query.filter_by(who=u, whom=i,
+                                                   group_id=group_id).first()
+            if who_whom is None:
+                who_whom = WhoOwesWhom(who=u, whom=i,
+                                       group_id=group_id)
+                db.session.add(who_whom)
+                db.session.commit()
     for d in data:
         who_whom = WhoOwesWhom.query.filter_by(who=d[0], whom=d[1]).first_or_404()
-        who_whom.set_amount(d[2])
+        who_whom.plus_amount(d[2])
         db.session.commit()
+
     return redirect(url_for('costs.final', group_id=group_id))
 
 
@@ -121,6 +125,37 @@ def cost_handler():
 def final():
 
     group_id = request.args.get('group_id')
+    users = CostGroup.query.filter_by(group_id=group_id).all()
+    user_dict = {}
+    for user in users:
+        user_dict.update({user.id: user.user.username})
     who_to_whom = WhoOwesWhom.query.filter_by(group_id=group_id).all()
 
-    return render_template('final_cost.html', who_to_whom=who_to_whom)
+    debt_list = []
+    for w in who_to_whom:
+        if w.debt_amount == 0:
+            db.session.delete(w)
+            db.session.commit()
+            continue
+        debt_list.append([
+            user_dict.get(w.who),
+            user_dict.get(w.whom),
+            w.debt_amount
+        ])
+
+    return render_template('final_cost.html', debt_list=debt_list)
+
+
+@costs.route('/delete_group_costs')
+@login_required
+def delete_group_cost():
+
+    group_id = request.args.get('group_id')
+
+    deleted_costs = Costs.query.filter_by(group_id=group_id).all()
+
+    for cost in deleted_costs:
+        db.session.delete(cost)
+        db.session.commit()
+
+

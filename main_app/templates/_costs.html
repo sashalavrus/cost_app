@@ -8,5 +8,5 @@
   </div>
 </div>
     {% endfor %}
-
-<a href="{{ url_for('costs.cost_handler', group_id=group_id)}}">{{group_id}}</a>
+<a class="btn btn-success" href="{{ url_for('costs.cost_handler', group_id=group_id)}}" role="button">Calculate</a>
+<a class="btn btn-success" href="{{ url_for('costs.final', group_id=group_id)}}" role="button">View table</a>

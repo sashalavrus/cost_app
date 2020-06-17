@@ -1,52 +1,73 @@
 from . import api
-from flask import jsonify, request, current_app, url_for
+from flask import jsonify, request, current_app, url_for, g
 from ..models import User, Costs, Groups, CostGroup, Permission, Needs
 from flask_login import current_user, login_required
 from main_app import db
 from .errors import forbidden
 
 
+@api.route('/needs/get_need/<int:id>')
+def get_need(id):
+
+    need = Needs.query.get_or_404(id)
+    memberships = CostGroup.query.filter_by(group_id=need.group_id,
+                                            user_id=g.current_user.id).first()
+
+    if memberships is not None or g.current_user.is_administrator():
+        return jsonify(need.to_json()), 200
+
+    return forbidden('You are not a member of the group')
+
+
 @api.route('/needs/user')
-@login_required
 def view_user_needs():
 
-    needs = Needs.query.filter_by(who_posted=current_user.id).all()
+    needs = Needs.query.filter_by(who_posted=g.current_user.id).all()
 
-    return jsonify(needs.to_json()), 200
+    return jsonify({'needs': [need.to_json() for need in needs]}), 200
 
 
 @api.route('/needs/user_groups')
-@login_required
 def view_user_group_needs():
 
     group_id = request.json.get('group_id')
 
-    group_needs = Needs.query.filter_by(group_id=group_id).all()
+    memberships = CostGroup.query.filter_by(user_id=g.current_user.id,
+                                            group_id=group_id).first()
 
-    return jsonify(group_needs.to_json()), 200
+    if memberships is not None or g.current_user.is_administrator():
+        group_needs = Needs.query.filter_by(group_id=group_id)
+
+        return jsonify({'needs': [need.to_json() for need in group_needs]}), 200
+
+    return forbidden('You are not a member of the group')
 
 
 @api.route('/needs/create', methods=['POST'])
-@login_required
-def create():
+def create_need():
 
-    need = Needs.from_json(request.json)
-    need.who_posted = current_user.id
+    text = request.json.get('text')
+    group_id = request.json.get('group_id')
+    who_posted = g.current_user.id
+    memberships = CostGroup.query.filter_by(user_id=who_posted,
+                                            group_id=group_id).first()
 
-    db.session.add(need)
-    db.session.commit()
-
-    return jsonify(need.to_json()), 201
+    if memberships is not None:
+        need = Needs(text=text, group_id=group_id,
+                     user_id=who_posted)
+        db.session.add(need)
+        db.session.commit()
+        return jsonify(need.to_json()), 201
+    return forbidden('You are not member of group')
 
 
 @api.route('/needs/delete/<int:id>', methods=['DELETE'])
-@login_required
 def delete(id):
 
     need = Needs.query.get_or_404(id)
 
-    if current_user.id == need.who_posted or \
-            current_user.can(Permission.MODERATE):
+    if g.current_user.id == need.who_posted or \
+            g.current_user.can(Permission.MODERATE):
 
         db.session.delete(need)
         db.session.commit()
@@ -59,15 +80,14 @@ def delete(id):
 
 
 @api.route('/needs/update/<int:id>', methods=['PUT'])
-@login_required
 def update(id):
 
     need = Needs.query.get_or_404(id)
 
-    if need.current_user == need.author or \
-            current_user.can(Permission.MODERATE):
+    if need.who_posted == need.author or \
+            g.current_user.can(Permission.ADMIN):
 
-        need.description = request.json.get('description')
+        need.text = request.json.get('text')
         need.group_id = request.json.get('group_id')
 
         db.session.commit()
