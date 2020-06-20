@@ -329,6 +329,9 @@ class WhoOwesWhom(db.Model):
 
     def to_json(self):
         json_wow = {
-            'url': url_for('api.get_group_calculation', group_id=self.id, _external=True)
+            'who': url_for('api.get_user', id=self.who, _external=True),
+            'whom': url_for('api.get_user', id=self.whom, _external=True),
+            'group': url_for('api.get_group', id=self.group_id, _external=True),
+            'debt_amount': self.debt_amount
                 }
         return json_wow

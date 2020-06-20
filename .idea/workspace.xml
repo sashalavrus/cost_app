@@ -2,30 +2,17 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="11def96f-a8aa-41e5-a735-718f01b4527b" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/main_app/fake_data.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main_app/templates/admin_panel.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_app/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/main_app/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_app/api/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/main_app/api/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_app/api/auth.py" beforeDir="false" afterPath="$PROJECT_DIR$/main_app/api/auth.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main_app/api/costs.py" beforeDir="false" afterPath="$PROJECT_DIR$/main_app/api/costs.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_app/api/groups.py" beforeDir="false" afterPath="$PROJECT_DIR$/main_app/api/groups.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_app/api/needs.py" beforeDir="false" afterPath="$PROJECT_DIR$/main_app/api/needs.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_app/api/users.py" beforeDir="false" afterPath="$PROJECT_DIR$/main_app/api/users.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main_app/costs/cost_handler.py" beforeDir="false" afterPath="$PROJECT_DIR$/main_app/costs/cost_handler.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main_app/costs/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/main_app/costs/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main_app/data.sqlite" beforeDir="false" afterPath="$PROJECT_DIR$/main_app/data.sqlite" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main_app/decorators.py" beforeDir="false" afterPath="$PROJECT_DIR$/main_app/decorators.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_app/fake_data.py" beforeDir="false" afterPath="$PROJECT_DIR$/main_app/fake_data.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main_app/groups/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/main_app/groups/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main_app/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/main_app/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_app/needs/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/main_app/needs/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_app/templates/_costs.html" beforeDir="false" afterPath="$PROJECT_DIR$/main_app/templates/_costs.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_app/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/main_app/templates/base.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_app/templates/confirm.txt" beforeDir="false" afterPath="$PROJECT_DIR$/main_app/templates/confirm.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main_app/templates/final_cost.html" beforeDir="false" afterPath="$PROJECT_DIR$/main_app/templates/final_cost.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_app/users/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/main_app/users/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_app/users/form.py" beforeDir="false" afterPath="$PROJECT_DIR$/main_app/users/form.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_app/users/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/main_app/users/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -199,7 +186,9 @@
       <workItem from="1592310774143" duration="3324000" />
       <workItem from="1592323833913" duration="7131000" />
       <workItem from="1592392562280" duration="9215000" />
-      <workItem from="1592413574700" duration="4133000" />
+      <workItem from="1592413574700" duration="5178000" />
+      <workItem from="1592484857604" duration="12945000" />
+      <workItem from="1592573498732" duration="3406000" />
     </task>
     <servers />
   </component>
@@ -218,22 +207,22 @@
       <screen x="0" y="0" width="1920" height="1043" />
     </state>
     <state x="707" y="327" width="573" height="390" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1920.1043@0.0.1920.1043" timestamp="1591793943325" />
-    <state width="1874" height="263" key="GridCell.Tab.0.bottom" timestamp="1592416668886">
+    <state width="1874" height="263" key="GridCell.Tab.0.bottom" timestamp="1592509866285">
       <screen x="0" y="0" width="1920" height="1043" />
     </state>
-    <state width="1874" height="263" key="GridCell.Tab.0.bottom/0.0.1920.1043@0.0.1920.1043" timestamp="1592416668886" />
-    <state width="1874" height="263" key="GridCell.Tab.0.center" timestamp="1592416668885">
+    <state width="1874" height="263" key="GridCell.Tab.0.bottom/0.0.1920.1043@0.0.1920.1043" timestamp="1592509866285" />
+    <state width="1874" height="263" key="GridCell.Tab.0.center" timestamp="1592509866283">
       <screen x="0" y="0" width="1920" height="1043" />
     </state>
-    <state width="1874" height="263" key="GridCell.Tab.0.center/0.0.1920.1043@0.0.1920.1043" timestamp="1592416668885" />
-    <state width="1874" height="263" key="GridCell.Tab.0.left" timestamp="1592416668885">
+    <state width="1874" height="263" key="GridCell.Tab.0.center/0.0.1920.1043@0.0.1920.1043" timestamp="1592509866283" />
+    <state width="1874" height="263" key="GridCell.Tab.0.left" timestamp="1592509866283">
       <screen x="0" y="0" width="1920" height="1043" />
     </state>
-    <state width="1874" height="263" key="GridCell.Tab.0.left/0.0.1920.1043@0.0.1920.1043" timestamp="1592416668885" />
-    <state width="1874" height="263" key="GridCell.Tab.0.right" timestamp="1592416668886">
+    <state width="1874" height="263" key="GridCell.Tab.0.left/0.0.1920.1043@0.0.1920.1043" timestamp="1592509866283" />
+    <state width="1874" height="263" key="GridCell.Tab.0.right" timestamp="1592509866284">
       <screen x="0" y="0" width="1920" height="1043" />
     </state>
-    <state width="1874" height="263" key="GridCell.Tab.0.right/0.0.1920.1043@0.0.1920.1043" timestamp="1592416668886" />
+    <state width="1874" height="263" key="GridCell.Tab.0.right/0.0.1920.1043@0.0.1920.1043" timestamp="1592509866284" />
     <state width="1874" height="340" key="GridCell.Tab.1.bottom" timestamp="1587142715538">
       <screen x="0" y="0" width="1920" height="1043" />
     </state>
@@ -258,10 +247,10 @@
       <screen x="0" y="0" width="1920" height="1043" />
     </state>
     <state x="456" y="157" key="SettingsEditor/0.0.1920.1043@0.0.1920.1043" timestamp="1586191085303" />
-    <state x="639" y="350" key="com.intellij.ide.util.TipDialog" timestamp="1592413595865">
+    <state x="639" y="350" key="com.intellij.ide.util.TipDialog" timestamp="1592573508318">
       <screen x="0" y="0" width="1920" height="1043" />
     </state>
-    <state x="639" y="350" key="com.intellij.ide.util.TipDialog/0.0.1920.1043@0.0.1920.1043" timestamp="1592413595865" />
+    <state x="639" y="350" key="com.intellij.ide.util.TipDialog/0.0.1920.1043@0.0.1920.1043" timestamp="1592573508318" />
     <state x="552" y="184" width="804" height="677" key="scopes" timestamp="1586110390413">
       <screen x="0" y="0" width="1920" height="1043" />
     </state>
@@ -272,6 +261,6 @@
     <state x="623" y="230" width="672" height="678" key="search.everywhere.popup/0.0.1920.1043@0.0.1920.1043" timestamp="1586111116202" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/final_project$final_project.coverage" NAME="final_project Coverage Results" MODIFIED="1592416668865" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/final_project$final_project.coverage" NAME="final_project Coverage Results" MODIFIED="1592578932355" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

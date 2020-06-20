@@ -37,8 +37,8 @@ def populate_db(count=10):
 
         fake_cost = Costs(cost_title=fake.text(15),
                           spent_money=fake.random_int(0, 100, 2),
-                          who_spent=user.id,
                           group_id=group.id)
+        fake_cost.who_spent = user.id
         db.session.add(fake_cost)
         db.session.commit()
 

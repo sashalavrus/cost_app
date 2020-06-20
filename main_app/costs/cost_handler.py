@@ -1,15 +1,39 @@
-from main_app.models import Costs
+from main_app.models import Costs, WhoOwesWhom, CostGroup
 from functools import reduce
+from .. import db
 
 
-def cost_handle(users, group_id):
+
+def cost_handle(group_id):
+
+    users = CostGroup.query.filter_by(group_id=group_id).all()
+    user_list = []
+    for user in users:
+        user_list.append(user.user_id)
 
     result = dict()
-    for user in users:
-        user_costs = Costs.query.filter_by(who_spent=user.user_id, group_id=group_id).all()
-        result.update({user.user_id: cost_sum(user_costs)})
+    for user_id in user_list:
+        user_costs = Costs.query.filter_by(who_spent=user_id, group_id=group_id).all()
+        result.update({user_id: cost_sum(user_costs)})
 
     result = inter_process(result)
+
+    for u in user_list:
+
+        copy_list = user_list.copy()
+        copy_list.remove(u)
+        for i in copy_list:
+            who_whom = WhoOwesWhom.query.filter_by(who=u, whom=i,
+                                                   group_id=group_id).first()
+            if who_whom is None:
+                who_whom = WhoOwesWhom(who=u, whom=i,
+                                       group_id=group_id)
+                db.session.add(who_whom)
+                db.session.commit()
+    for d in result:
+        who_whom = WhoOwesWhom.query.filter_by(who=d[0], whom=d[1]).first_or_404()
+        who_whom.plus_amount(d[2])
+        db.session.commit()
 
     return result
 

@@ -1,10 +1,11 @@
-from flask import render_template, url_for, flash, redirect, request, abort
+from flask import render_template, url_for, flash, redirect, request, abort, jsonify
 from flask_login import current_user, login_required
 from main_app import db
 from main_app.models import Costs, User, WhoOwesWhom, CostGroup, Groups, Permission
 from main_app.costs.form import CostForm, CostUpdate, CostHandler
 from main_app.costs.cost_handler import cost_handle
 from . import costs
+
 
 
 @costs.route('/all_costs', methods=['GET', 'POST'])
@@ -95,27 +96,8 @@ def delete():
 @login_required
 def cost_handler():
     group_id = request.args.get('group_id')
-    user_list = []
-    users = CostGroup.query.filter(CostGroup.group_id == group_id).all()
-    data = cost_handle(users, group_id)
-    for u in users:
-        user_list.append(u.user_id)
-    for u in user_list:
 
-        copy_list = user_list.copy()
-        copy_list.remove(u)
-        for i in copy_list:
-            who_whom = WhoOwesWhom.query.filter_by(who=u, whom=i,
-                                                   group_id=group_id).first()
-            if who_whom is None:
-                who_whom = WhoOwesWhom(who=u, whom=i,
-                                       group_id=group_id)
-                db.session.add(who_whom)
-                db.session.commit()
-    for d in data:
-        who_whom = WhoOwesWhom.query.filter_by(who=d[0], whom=d[1]).first_or_404()
-        who_whom.plus_amount(d[2])
-        db.session.commit()
+    cost_handle(group_id)
 
     return redirect(url_for('costs.final', group_id=group_id))
 
@@ -143,7 +125,8 @@ def final():
             w.debt_amount
         ])
 
-    return render_template('final_cost.html', debt_list=debt_list)
+    return render_template('final_cost.html', debt_list=debt_list,
+                           group_id=group_id)
 
 
 @costs.route('/delete_group_costs')
@@ -158,4 +141,4 @@ def delete_group_cost():
         db.session.delete(cost)
         db.session.commit()
 
-
+    return redirect(url_for('core.index'))

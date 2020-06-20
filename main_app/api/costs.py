@@ -1,10 +1,10 @@
 from . import api
 from flask import jsonify, request, current_app, url_for, g
-from ..models import User, Costs, Groups, CostGroup, Permission
+from ..models import User, Costs, Groups, CostGroup, Permission, WhoOwesWhom
 from flask_login import current_user, login_required
 from main_app import db
 from .errors import forbidden
-from .auth import auth
+from main_app.costs.cost_handler import cost_handle
 
 
 @api.route('/costs/<int:id>')
@@ -80,3 +80,28 @@ def update_cost(id):
         return jsonify(cost.to_json()), {"massage": 'successfully updated'}
 
     return forbidden('Access denied')
+
+
+@api.route('/cost/calculate', methods=['POST'])
+def calculate_cost_group():
+
+    group_id = request.json.get('group_id')
+    cost_handle(group_id)
+
+    return jsonify({'massage': 'All calculation, is done'})
+
+
+@api.route('/cost/debt_table', methods=['POST'])
+def debt_table():
+
+    group_id = request.json.get('group_id')
+
+    who_to_whom = WhoOwesWhom.query.filter_by(group_id=group_id).all()
+
+    for w in who_to_whom:
+        if w.debt_amount == 0:
+            db.session.delete(w)
+            db.session.commit()
+            continue
+
+        return jsonify({"debt_row": [debt_row.to_json() for debt_row in who_to_whom]})

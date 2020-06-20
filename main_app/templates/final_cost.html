@@ -5,4 +5,5 @@
     <p> {{ debt_row[0] }} должен {{ debt_row[1] }} {{ debt_row[2]}} Гривен</p>
 
 {% endfor %}
+    <a class="btn btn-success" href="{{ url_for('costs.delete_group_cost', group_id=group_id)}}" role="button">Delete group costs</a>
 {% endblock %}

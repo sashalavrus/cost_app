@@ -7,7 +7,6 @@ from . import groups
 from .. decorators import permission_required, admin_required
 
 
-
 @groups.route('/create_group', methods=['GET', 'POST'])
 @login_required
 def create():
@@ -64,11 +63,12 @@ def delete():
 
     deleted_group_obj = Groups.query.get(deleted_group_id)
 
-    deleted_costs = Costs.query.filter_by(group_id=deleted_group_id)
+    deleted_costs = Costs.query.filter_by(group_id=deleted_group_id).all()
 
-    deleted_group_mem = CostGroup.query.filter_by(group_id=deleted_group_id)
+    deleted_group_mem = CostGroup.query.filter_by(group_id=deleted_group_id).all()
 
-    deleted_group_needs = Needs.query.filter_by(group_id=deleted_group_id)
+    deleted_group_needs = Needs.query.filter_by(group_id=deleted_group_id).all()
+
 
     for cost in deleted_costs:
         db.session.delete(cost)
