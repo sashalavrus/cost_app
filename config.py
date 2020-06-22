@@ -6,6 +6,7 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 class Config:
 
     SECRET_KEY = os.environ.get('SECRET_KEY')
+    SSL_DISABLE = False
     COSTAPP_ADMIN = os.environ.get('COSTAPP_ADMIN')
     COSTAPP_MAIL_SUBJECT_PREFIX = '[CostApp]'
     COSTAPP_MAIL_SENDER = 'CostApp ADMIN costapp2020@gmail.com'
