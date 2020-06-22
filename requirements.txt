@@ -40,6 +40,8 @@ flask-script==2.0.6
 coverage==5.1
 flask-sslify==0.1.5
 gunicorn==20.0.4
+psycopg2-binary==2.8.5
+
 
 
 
