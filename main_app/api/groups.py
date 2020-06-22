@@ -1,10 +1,10 @@
 from . import api
-from flask import jsonify, request, current_app, url_for, g
+from flask import jsonify, request, current_app, url_for, g, abort
 from ..models import User, Costs, Groups, CostGroup, Permission, Needs
 from flask_login import current_user, login_required
 from main_app import db
 from .errors import forbidden
-from ..decorators import permission_required
+from ..decorators import api_permission_required as permission_required
 
 
 @api.route('/get_group/<int:id>')
@@ -41,7 +41,8 @@ def get_user_groups():
 def create_group():
 
     group = Groups.from_json(request.json)
-
+    if group is None or group.name == '':
+        abort(400)
     db.session.add(group)
     db.session.commit()
 
@@ -53,6 +54,8 @@ def create_group():
 def membership():
 
     user_membership = CostGroup.from_json(request.json)
+    if user_membership is None:
+        abort(400)
 
     db.session.add(user_membership)
     db.session.commit()

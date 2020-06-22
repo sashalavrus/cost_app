@@ -12,7 +12,7 @@ def load_user(user_id):
 
 
 class Permission:
-    COMMENT = 1
+    COST = 1
     WRITE = 2
     MODERATE = 4
     ADMIN = 8
@@ -34,10 +34,10 @@ class Role(db.Model):
     @staticmethod
     def insert_roles():
         roles = {
-            'User': [Permission.COMMENT, Permission.WRITE],
-            'Moderator': [Permission.COMMENT, Permission.WRITE,
+            'User': [Permission.COST, Permission.WRITE],
+            'Moderator': [Permission.COST, Permission.WRITE,
                           Permission.MODERATE],
-            'Administrator': [Permission.COMMENT, Permission.WRITE,
+            'Administrator': [Permission.COST, Permission.WRITE,
                               Permission.MODERATE, Permission.ADMIN],
         }
         default_role = 'User'
@@ -268,16 +268,22 @@ class CostGroup(db.Model):
         json_memberships = {
             'user_id': self.user_id,
             'group_id': self.group_id
-
         }
         return json_memberships
 
     @staticmethod
     def from_json(memberships_json):
-        user_id = memberships_json.get('user_id')
-        group_id = memberships_json.get('group_id')
+        try:
+            user_id = memberships_json.get('user_id')
+            group_id = memberships_json.get('group_id')
+            if user_id is None or group_id is None:
+                return None
+            return CostGroup(user_id, group_id)
+        except AttributeError:
+            return None
 
-        return CostGroup(user_id, group_id)
+
+
 
 
 class Groups(db.Model):
@@ -301,8 +307,13 @@ class Groups(db.Model):
 
     @staticmethod
     def from_json(group_json):
-        name = group_json.get('name')
-        return Groups(name)
+        try:
+            name = group_json.get('name')
+            if name is None:
+                return None
+            return Groups(name)
+        except AttributeError:
+            return None
 
 
 class WhoOwesWhom(db.Model):

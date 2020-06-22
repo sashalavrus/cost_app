@@ -36,4 +36,10 @@ wincertstore==0.2
 WTForms==2.1
 Flask-mail==0.9.1
 Flask-HTTPAuth==4.0.0
+flask-script==2.0.6
+coverage==5.1
+flask-sslify==0.1.5
+gunicorn==20.0.4
+
+
 

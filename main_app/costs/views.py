@@ -1,4 +1,4 @@
-from flask import render_template, url_for, flash, redirect, request, abort, jsonify
+from flask import render_template, url_for, flash, redirect, request, abort
 from flask_login import current_user, login_required
 from main_app import db
 from main_app.models import Costs, User, WhoOwesWhom, CostGroup, Groups, Permission
