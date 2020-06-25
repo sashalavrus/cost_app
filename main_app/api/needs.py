@@ -6,7 +6,7 @@ from main_app import db
 from .errors import forbidden
 
 
-@api.route('/needs/get_need/<int:id>')
+@api.route('/needs/<int:id>')
 def get_need(id):
 
     need = Needs.query.get_or_404(id)
@@ -19,7 +19,7 @@ def get_need(id):
     return forbidden('You are not a member of the group')
 
 
-@api.route('/needs/user')
+@api.route('/needs/self')
 def view_user_needs():
 
     needs = Needs.query.filter_by(who_posted=g.current_user.id).all()
@@ -27,16 +27,15 @@ def view_user_needs():
     return jsonify({'needs': [need.to_json() for need in needs]}), 200
 
 
-@api.route('/needs/user_groups')
-def view_user_group_needs():
+@api.route('/needs/group/<int:id>')
+def view_user_group_needs(id):
 
-    group_id = request.json.get('group_id')
 
     memberships = CostGroup.query.filter_by(user_id=g.current_user.id,
-                                            group_id=group_id).first()
+                                            group_id=id).first()
 
     if memberships is not None or g.current_user.is_administrator():
-        group_needs = Needs.query.filter_by(group_id=group_id)
+        group_needs = Needs.query.filter_by(group_id=id)
 
         return jsonify({'needs': [need.to_json() for need in group_needs]}), 200
 
@@ -61,7 +60,7 @@ def create_need():
     return forbidden('You are not member of group')
 
 
-@api.route('/needs/delete/<int:id>', methods=['DELETE'])
+@api.route('/needs/<int:id>', methods=['DELETE'])
 def delete(id):
 
     need = Needs.query.get_or_404(id)
@@ -79,7 +78,7 @@ def delete(id):
         return forbidden('Access denied')
 
 
-@api.route('/needs/update/<int:id>', methods=['PUT'])
+@api.route('/needs/<int:id>', methods=['PUT'])
 def update(id):
 
     need = Needs.query.get_or_404(id)

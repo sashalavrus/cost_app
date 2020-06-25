@@ -15,7 +15,7 @@ def get_cost(id):
     return jsonify(cost.to_json()), 200
 
 
-@api.route('/costs/user')
+@api.route('/costs/self')
 def view_user_costs():
 
     costs = Costs.query.filter_by(who_spent=g.current_user.id).all()
@@ -23,14 +23,12 @@ def view_user_costs():
     return jsonify({'costs': [cost.to_json() for cost in costs]}), 200
 
 
-@api.route('/costs/user_groups')
-def view_user_group_cost():
+@api.route('/costs/group/<int:id>')
+def group_costs(id):
 
-    group_id = request.json.get('group_id')
+    costs = Costs.query.filter_by(group_id=id).all()
 
-    group_costs = Costs.query.filter_by(group_id=group_id).all()
-
-    return jsonify({'costs': [cost.to_json() for cost in group_costs]}), 200
+    return jsonify({'costs': [cost.to_json() for cost in costs]}), 200
 
 
 @api.route('/costs/create', methods=['POST'])
@@ -45,7 +43,7 @@ def create_cost():
     return jsonify(cost.to_json()), 201
 
 
-@api.route('/costs/delete/<int:id>', methods=['DELETE'])
+@api.route('/costs/<int:id>', methods=['DELETE'])
 def delete_cost(id):
 
     cost = Costs.query.get_or_404(id)
@@ -63,7 +61,7 @@ def delete_cost(id):
         return forbidden('Access denied')
 
 
-@api.route('/cost/update/<int:id>', methods=['PUT'])
+@api.route('/costs/<int:id>', methods=['PUT'])
 def update_cost(id):
 
     cost = Costs.query.get_or_404(id)
@@ -82,21 +80,18 @@ def update_cost(id):
     return forbidden('Access denied')
 
 
-@api.route('/cost/calculate', methods=['POST'])
-def calculate_cost_group():
+@api.route('/costs/calculate/<int:id>')
+def calculate_cost_group(id):
 
-    group_id = request.json.get('group_id')
-    cost_handle(group_id)
+    cost_handle(id)
 
     return jsonify({'massage': 'All calculation, is done'})
 
 
-@api.route('/cost/debt_table', methods=['POST'])
-def debt_table():
+@api.route('/costs/debt_table/<int:id>')
+def debt_table(id):
 
-    group_id = request.json.get('group_id')
-
-    who_to_whom = WhoOwesWhom.query.filter_by(group_id=group_id).all()
+    who_to_whom = WhoOwesWhom.query.filter_by(group_id=id).all()
 
     for w in who_to_whom:
         if w.debt_amount == 0:

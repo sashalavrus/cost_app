@@ -7,6 +7,7 @@ from main_app.users.picture_handler import add_profile_pic
 from . import users
 from .email import send_mail
 from ..decorators import permission_required
+from sqlalchemy.exc import IntegrityError
 
 
 @users.before_app_request
@@ -44,9 +45,12 @@ def register():
         user = User(email=form.email.data,
                     username=form.username.data,
                     password=form.password.data)
+        try:
+            db.session.add(user)
+            db.session.commit()
+        except IntegrityError:
+            return render_template('register.html', form=form)
 
-        db.session.add(user)
-        db.session.commit()
         token = user.generate_reset_token()
         send_mail(user.email, 'Confirm Your Account',
                   'confirm', user=user, token=token)

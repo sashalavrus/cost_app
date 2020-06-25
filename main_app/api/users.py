@@ -1,9 +1,9 @@
 from . import api
-from flask import jsonify, request, current_app, url_for
+from flask import jsonify, request, current_app, url_for, g
 from ..models import User, Costs, Groups, CostGroup
-from flask_login import current_user, login_required
 from main_app import db
 from ..users.email import send_mail
+from sqlalchemy.exc import IntegrityError
 
 
 @api.route('/users/<int:id>')
@@ -16,9 +16,11 @@ def get_user(id):
 def register():
 
     user = User.from_json(request.json)
-
-    db.session.add(user)
-    db.session.commit()
+    try:
+        db.session.add(user)
+        db.session.commit()
+    except IntegrityError:
+        return jsonify({'Username or Email is already exist'})
 
     token = user.generate_reset_token()
     send_mail(user.email, 'Confirm Your Account',
@@ -27,13 +29,22 @@ def register():
     return jsonify(user.to_json()), 201
 
 
-@api.route('/users/update', methods=['PUT'])
-@login_required
+@api.route('/users/self', methods=['PUT'])
 def update_user():
-    user = current_user
+    user = g.current_user
 
     user.username = request.json.get('username')
-    db.session.add(user)
-    db.session.commit()
+    try:
+        db.session.add(user)
+        db.session.commit()
+    except IntegrityError:
+        return jsonify({'massage': 'This Username is already used'})
+
+    return jsonify(user.to_json())
+
+
+@api.route('/users/self', methods=['GET'])
+def get_self_info():
+    user = g.current_user
 
     return jsonify(user.to_json())

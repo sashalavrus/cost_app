@@ -283,9 +283,6 @@ class CostGroup(db.Model):
             return None
 
 
-
-
-
 class Groups(db.Model):
 
     __tablename__ = 'groups'
@@ -302,6 +299,8 @@ class Groups(db.Model):
 
             'url': url_for('api.get_group', id=self.id, _external=True),
             'name': self.name,
+            'costs': url_for('api.group_costs', id=self.id, _external=True),
+            'debt_table': url_for('api.debt_table', id=self.id, _external=True)
             }
         return json_group
 

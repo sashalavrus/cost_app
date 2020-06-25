@@ -5,6 +5,7 @@ from main_app.models import User, Costs, Needs, Groups, CostGroup, Permission
 from main_app.groups.form import CreateCostGroup, CreateGroup
 from . import groups
 from .. decorators import permission_required, admin_required
+from sqlalchemy.exc import IntegrityError
 
 
 @groups.route('/create_group', methods=['GET', 'POST'])
@@ -17,8 +18,11 @@ def create():
 
         group = Groups(name=form.name.data)
 
-        db.session.add(group)
-        db.session.commit()
+        try:
+            db.session.add(group)
+            db.session.commit()
+        except IntegrityError:
+            return render_template('create_group.html', form=form)
         flash('Thank you for register new Group')
         return redirect(url_for('core.index'))
 
@@ -69,7 +73,6 @@ def delete():
 
     deleted_group_needs = Needs.query.filter_by(group_id=deleted_group_id).all()
 
-
     for cost in deleted_costs:
         db.session.delete(cost)
         db.session.commit()
@@ -99,9 +102,11 @@ def update():
     form = CreateGroup()
 
     if form.validate_on_submit():
-
-        updated_group.name = form.name.data
-        db.session.commit()
+        try:
+            updated_group.name = form.name.data
+            db.session.commit()
+        except IntegrityError:
+            return render_template('update_group.html', form=form)
         flash('Group name has been updated')
         return redirect(url_for('groups.view_all'))
 
