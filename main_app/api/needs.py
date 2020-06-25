@@ -1,7 +1,7 @@
 from . import api
-from flask import jsonify, request, current_app, url_for, g
+from flask import jsonify, request, g
 from ..models import User, Costs, Groups, CostGroup, Permission, Needs
-from flask_login import current_user, login_required
+
 from main_app import db
 from .errors import forbidden
 
@@ -30,7 +30,6 @@ def view_user_needs():
 @api.route('/needs/group/<int:id>')
 def view_user_group_needs(id):
 
-
     memberships = CostGroup.query.filter_by(user_id=g.current_user.id,
                                             group_id=id).first()
 
@@ -52,8 +51,8 @@ def create_need():
                                             group_id=group_id).first()
 
     if memberships is not None:
-        need = Needs(text=text, group_id=group_id,
-                     user_id=who_posted)
+        need = Needs(text=text, group_id=group_id)
+        need.who_posted = who_posted
         db.session.add(need)
         db.session.commit()
         return jsonify(need.to_json()), 201

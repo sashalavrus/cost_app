@@ -163,10 +163,12 @@ class User(db.Model, UserMixin):
 
 class AnonUser(AnonymousUserMixin):
 
-    def can(self, permissions):
+    @staticmethod
+    def can(cls, permissions):
         return False
 
-    def is_administrator(self):
+    @staticmethod
+    def is_administrator(cls):
         return False
 
 
@@ -225,10 +227,9 @@ class Needs(db.Model):
     group_id = db.Column(db.Integer, db.ForeignKey('groups.id'))
     who_posted = db.Column(db.Integer, db.ForeignKey('users.id'))
 
-    def __init__(self, text, group_id, user_id):
+    def __init__(self, text, group_id):
         self.text = text
         self.group_id = group_id
-        self.who_posted = user_id
 
     def __repr__(self):
         return f"Need {self.text} as soon as possible"

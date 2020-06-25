@@ -7,9 +7,6 @@ fake = Faker()
 
 def populate_db(count=10):
 
-
-    #create group
-
     group = Groups('TestGroup')
     db.session.add(group)
     db.session.commit()
@@ -47,7 +44,3 @@ def populate_db(count=10):
                           user_id=user.id)
         db.session.add(fake_need)
         db.session.commit()
-
-
-
-

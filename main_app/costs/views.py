@@ -1,16 +1,15 @@
 from flask import render_template, url_for, flash, redirect, request, abort
 from flask_login import current_user, login_required
 from main_app import db
-from main_app.models import Costs, User, WhoOwesWhom, CostGroup, Groups, Permission
-from main_app.costs.form import CostForm, CostUpdate, CostHandler
+from main_app.models import Costs, WhoOwesWhom, CostGroup, Groups, Permission
+from main_app.costs.form import CostForm, CostUpdate
 from main_app.costs.cost_handler import cost_handle
 from . import costs
 
 
-
 @costs.route('/all_costs', methods=['GET', 'POST'])
 @login_required
-def all():
+def view_all():
     if request.method == 'GET':
         groups = CostGroup.query.filter_by(user_id=current_user.id).all()
         return render_template('costs.html', groups=groups)

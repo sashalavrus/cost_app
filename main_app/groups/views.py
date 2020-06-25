@@ -1,10 +1,10 @@
 from flask import render_template, url_for, flash, redirect, request
-from flask_login import login_user, current_user, logout_user, login_required
+from flask_login import current_user, login_required
 from main_app import db
 from main_app.models import User, Costs, Needs, Groups, CostGroup, Permission
 from main_app.groups.form import CreateCostGroup, CreateGroup
 from . import groups
-from .. decorators import permission_required, admin_required
+from .. decorators import permission_required
 from sqlalchemy.exc import IntegrityError
 
 
@@ -115,14 +115,3 @@ def update():
         form.name.data = updated_group.name
 
         return render_template('update_group.html', form=form)
-
-
-
-
-
-
-
-
-
-
-

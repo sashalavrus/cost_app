@@ -1,7 +1,5 @@
 from flask import Blueprint
 
-
-
 needs = Blueprint('needs', __name__)
 
 from . import views

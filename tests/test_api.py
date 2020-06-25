@@ -1,6 +1,5 @@
 from unittest import TestCase
 import json
-import re
 from base64 import b64encode
 from flask import url_for
 from main_app import create_app, db
@@ -151,4 +150,3 @@ class APITestCase(TestCase):
             data=json.dumps({'user_id': 1,
                              'group_id': 1}))
         self.assertTrue(response.status_code == 201)
-

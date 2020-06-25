@@ -3,7 +3,6 @@ from functools import reduce
 from .. import db
 
 
-
 def cost_handle(group_id):
 
     users = CostGroup.query.filter_by(group_id=group_id).all()

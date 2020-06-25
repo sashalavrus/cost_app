@@ -1,5 +1,5 @@
 from flask import render_template, url_for, flash, redirect, request, abort
-from flask_login import login_user, current_user, logout_user, login_required
+from flask_login import current_user, login_required
 from main_app import db
 from main_app.models import User, Costs, Needs, CostGroup, Groups
 from main_app.needs.form import NeedsForm
@@ -20,8 +20,8 @@ def create():
     if form.validate_on_submit():
 
         group_id = request.values.get('group_id')
-        needs_obj = Needs(text=form.text.data, group_id=group_id, user_id=current_user.id)
-
+        needs_obj = Needs(text=form.text.data, group_id=group_id)
+        needs_obj.who_posted  = current_user.id
         db.session.add(needs_obj)
         db.session.commit()
         flash('Thank you for adding new needs')
@@ -78,7 +78,6 @@ def delete():
 
     deleted_need_id = request.args.get('deleted_need_id')
     deleted_need = Needs.query.get_or_404(deleted_need_id)
-
 
     if (current_user == deleted_need.author) or current_user.is_administrator:
         db.session.delete(deleted_need)

@@ -1,6 +1,6 @@
 from flask import render_template, request, jsonify
 from . import core
-from ..models import CostGroup, Needs, Costs
+from ..models import CostGroup, Costs
 from flask_login import current_user
 
 
@@ -41,12 +41,10 @@ def page_not_found(e):
 
 @core.app_errorhandler(500)
 def internal_server_error(e):
+
     if request.accept_mimetypes.accept_json and \
             not request.accept_mimetypes.accept_html:
         response = jsonify({'error': 'internal server error'})
         response.status_code = 500
         return response
     return render_template('error_pages/500.html'), 500
-
-
-

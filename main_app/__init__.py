@@ -1,4 +1,3 @@
-import os
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
@@ -26,7 +25,8 @@ def create_app(config_name):
 
     if not app.debug and not app.testing and not app.config['SSL_DISABLE']:
         from flask_sslify import SSLify
-        sslify = SSLify(app)
+        sslify = SSLify()
+        sslify.init_app(app)
 
     from .core import core
     from .costs import costs

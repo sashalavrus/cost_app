@@ -1,9 +1,7 @@
 from . import api
-from flask import jsonify, request, current_app, url_for, g, abort
-from ..models import User, Costs, Groups, CostGroup, Permission, Needs
-from flask_login import current_user, login_required
+from flask import jsonify, request, abort
+from ..models import  Costs, Groups, CostGroup, Permission, Needs
 from main_app import db
-from .errors import forbidden
 from ..decorators import api_permission_required as permission_required
 from sqlalchemy.exc import IntegrityError
 

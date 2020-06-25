@@ -1,6 +1,6 @@
 from . import api
-from flask import jsonify, request, current_app, url_for, g
-from ..models import User, Costs, Groups, CostGroup
+from flask import jsonify, request, g
+from ..models import User
 from main_app import db
 from ..users.email import send_mail
 from sqlalchemy.exc import IntegrityError

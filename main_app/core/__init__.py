@@ -9,4 +9,3 @@ from main_app.models import Permission
 @core.app_context_processor
 def inject_permissions():
     return dict(Permission=Permission)
-

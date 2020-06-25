@@ -1,7 +1,6 @@
 from . import api
-from flask import jsonify, request, current_app, url_for, g
-from ..models import User, Costs, Groups, CostGroup, Permission, WhoOwesWhom
-from flask_login import current_user, login_required
+from flask import jsonify, request, g
+from ..models import  Costs,  Permission, WhoOwesWhom
 from main_app import db
 from .errors import forbidden
 from main_app.costs.cost_handler import cost_handle

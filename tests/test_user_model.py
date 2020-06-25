@@ -1,8 +1,9 @@
 from unittest import TestCase
 from main_app import create_app, db
-from main_app.models import User, Groups, Costs, CostGroup, Needs, Role, WhoOwesWhom, Permission, AnonUser
+from main_app.models import User, Role, Permission, AnonUser
 from config import Config
 from time import sleep
+
 
 class UserModelTestCase(TestCase):
 
@@ -92,7 +93,3 @@ class UserModelTestCase(TestCase):
         expected_keys = ['url', 'username', 'role', 'groups']
         self.assertEqual(sorted(json_user), sorted(expected_keys))
         self.assertTrue('api/users' in json_user['url'])
-
-
-
-
