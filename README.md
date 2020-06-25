@@ -1,3 +1,6 @@
+
+
+
 # FOR WHAT?
 
  - For training
@@ -207,3 +210,7 @@ And finally ```python manage.py runserver```
 
 App in development procces, and may some things wound`t work
 
+=======
+# cost_app
+ cost processing application
+>>>>>>> edb5ba8e6589b0a9441c107f5b40b7c74c683e52
