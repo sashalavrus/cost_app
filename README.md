@@ -134,7 +134,7 @@ To create need, you mast send json data like this way:
 ```
 NOTE: ```username``` and ```email``` must be unique
 
-> response ```/api/token```
+> response ``` POST /api/token```
 ```
 {
   "expiration": 200000,
@@ -153,7 +153,7 @@ NOTE: ```username``` and ```email``` must be unique
   "who_spent": "https://costapp-2234.herokuapp.com/api/users/<user_id>"
 }
 ```
->  response ```/api/costs/debt_table/<group_id>```
+>  response ``` GET /api/costs/debt_table/<group_id>```
 ```
 {
   "debt_row": [
@@ -210,7 +210,4 @@ And finally ```python manage.py runserver```
 
 App in development procces, and may some things wound`t work
 
-=======
-# cost_app
- cost processing application
->>>>>>> edb5ba8e6589b0a9441c107f5b40b7c74c683e52
+
