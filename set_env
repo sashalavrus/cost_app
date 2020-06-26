@@ -1,8 +1,0 @@
-#!/bin/bash
-
-export SECRET_KEY=qwert123
-export COSTAPP_ADMIN=grifin2234@gmail.com
-export MAIL_USERNAME=costapp2020@gmail.com
-export MAIL_PASSWORD=pk340ak47
-string='All is done'
-echo $ string
